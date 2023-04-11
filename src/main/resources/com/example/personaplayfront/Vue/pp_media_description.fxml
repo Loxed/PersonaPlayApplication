@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+   <?import javafx.geometry.Insets?>
+   <?import javafx.scene.image.ImageView?>
+   <?import javafx.scene.layout.BorderPane?>
+   <?import javafx.scene.layout.HBox?>
+   <?import javafx.scene.layout.VBox?>
+   <?import javafx.scene.text.Font?>
+   <?import javafx.scene.text.Text?>
+   <?import javafx.scene.layout.Pane?>
+
+   <?import javafx.scene.control.Button?>
+   <Pane prefHeight="450.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:id="movie_desc_window" fx:controller="com.example.personaplayfront.Controller.Frontend.PpMediaDescriptionController">
+
+      <Pane prefHeight="450.0" prefWidth="1080.0" fx:id="my_gradient">
+         <HBox prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+               <VBox prefHeight="200.0" prefWidth="100.0">
+                  <children>
+                     <Text fx:id="title" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="TITLE" wrappingWidth="590">
+                        <VBox.margin>
+                           <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                        </VBox.margin>
+                        <font>
+                           <Font name="Eras Bold ITC" size="32.0" />
+                        </font>
+                     </Text>
+                     <Text fx:id="plot" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="PLOT" wrappingWidth="590">
+                        <font>
+                           <Font name="Eras Light ITC" size="20.0" />
+                        </font>
+                        <VBox.margin>
+                           <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                        </VBox.margin>
+                     </Text>
+                     <Text fx:id="actors" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="ACTORS" wrappingWidth="590">
+                        <font>
+                           <Font name="Eras Medium ITC" size="26.0" />
+                        </font>
+                        <VBox.margin>
+                           <Insets bottom="5.0" left="20.0" right="20.0" top="20.0" />
+                        </VBox.margin>
+                     </Text>
+                     <Text fx:id="genres" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="GENRES" wrappingWidth="590">
+                        <font>
+                           <Font name="Eras Medium ITC" size="26.0" />
+                        </font>
+                        <VBox.margin>
+                           <Insets bottom="10.0" left="20.0" right="20.0" top="5.0" />
+                        </VBox.margin>
+                     </Text>
+
+                  <!-- Play Media Button -->
+                     <Button fx:id="play_media" styleClass="button" mnemonicParsing="false" onAction="#playMedia" text="Play Media" textFill="WHITE" BorderPane.alignment="CENTER">
+                        <font>
+                           <Font name="Eras Medium ITC" size="26.0" />
+                        </font>
+                        <VBox.margin>
+                           <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                        </VBox.margin>
+                     </Button>
+                  </children>
+               </VBox>
+            </children>
+            <BorderPane.margin>
+               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </BorderPane.margin>
+         </HBox>
+      </Pane>
+   </Pane>

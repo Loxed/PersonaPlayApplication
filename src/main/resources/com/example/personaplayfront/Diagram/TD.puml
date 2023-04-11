@@ -1,0 +1,131 @@
+@startuml
+!define primary_key(x) <b><color:#b8861b><&key></color> x</b>
+!define foreign_key(x) <color:#aaaaaa><&key></color> x
+!define column(x) <color:#efefef><&media-record></color> x
+!define table(x) entity x << (T, white) >>
+
+table(User) {
+    primary_key(id) : INTEGER
+    column(username) : VARCHAR 20
+    column(password) : VARCHAR 32
+    column(email) : VARCHAR 50
+    column(content_filter) : BOOLEAN
+    foreign_key(role_id) : REFERENCES Role(id)
+    foreign_key(icon_id) : REFERENCES Icon(id)
+    foreign_key(payment_id) : REFERENCES Payment(id)
+}
+
+
+
+table(UserStatus) {
+    primary_key(id) : INTEGER
+    primary_key(user_id) : INTEGER
+    primary_key(media_id) : VARCHAR 9
+    column(user_rating) : INTEGER
+    column(manual_completion_status) : INTEGER
+}
+
+table(Media) {
+    primary_key(id) : INTEGER
+    foreign_key(ratings_id) : REFERENCES Rating(id)
+
+    column(imdb_id) : VARCHAR 9
+    column(title) : VARCHAR 100
+    column(year) : VARCHAR 4
+    column(rated) : VARCHAR 10
+    column(released) : VARCHAR 20
+    column(runtime) : VARCHAR 10
+    column(genre) : VARCHAR 50
+    column(director) : VARCHAR 50
+    column(writer) : VARCHAR 50
+    column(actors) : VARCHAR 50
+    column(plot) : VARCHAR 1000
+    column(language) : VARCHAR 50
+    column(country) : VARCHAR 50
+    column(awards) : VARCHAR 50
+    column(poster) : VARCHAR 200 ' link to poster
+    column(metascore) : VARCHAR 10
+    column(imdb_rating) : VARCHAR 10
+    column(imdb_votes) : VARCHAR 10
+    column(type) : VARCHAR 10
+    column(dvd) : VARCHAR 20
+    column(box_office) : VARCHAR 20
+    column(production) : VARCHAR 50
+    column(website) : VARCHAR 50
+    column(response) : VARCHAR 10
+    column(visibility) : VARCHAR 10
+    column(available) : BOOLEAN
+}
+
+table(Rating){
+    primary_key(id) : INTEGER
+    column(rating) : INTEGER
+    column(rating_count) : INTEGER
+}
+
+Media ||-u-o{ Rating
+
+UserStatus }|--|| Media
+UserStatus }|-l-|| User
+
+table(Status) {
+    primary_key(id) : INTEGER
+    column(completion_time): INTEGER
+    column(progress) : INTEGER
+    column(max_progress) : INTEGER
+}
+
+table(MediaStatus) {
+    primary_key(id) : INTEGER
+    primary_key(media_id) : INTEGER
+    primary_key(status_id) : INTEGER
+}
+
+MediaStatus }|-r-|| Media
+MediaStatus }|-l-|| Status
+
+table(Icon) {
+    primary_key(id) : INTEGER
+    column(icon) : INTEGER
+    column(background) : INTEGER
+}
+
+User ||-u-|| Icon
+
+table(Payment) {
+    primary_key(id) : INTEGER
+    column(card_number) : VARCHAR 16
+    column(card_holder) : VARCHAR 50
+    column(expiration_date) : DATE
+}
+
+User ||-u-|| Payment
+
+table(Role) {
+    primary_key(id) : INTEGER
+    column(name) : VARCHAR 20
+}
+
+User }o-u-|| Role
+
+table(Watchlist) {
+    primary_key(id) : INTEGER
+    column(type) : VARCHAR 20
+    foreign_key(user_id) : REFERENCES User(id)
+    foreign_key(media_status_id) : REFERENCES MediaStatus(id)
+    foreign_key(tag_id) : REFERENCES Tag(id)
+}
+
+table(Tag){
+    primary_key(id) : INTEGER
+    column(name) : VARCHAR 20
+}
+
+User ||-d-|| Watchlist
+
+Watchlist }o--o{ MediaStatus
+
+Watchlist }o-u-o{ Tag
+
+
+@enduml
