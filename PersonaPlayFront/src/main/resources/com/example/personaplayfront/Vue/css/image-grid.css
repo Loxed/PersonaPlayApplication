@@ -1,0 +1,12 @@
+.image-view {
+    -fx-border-color: black;
+    -fx-border-width: 20px;
+}
+
+
+.grid-pane {
+    -fx-background-color: #f5f5f5;
+    -fx-padding: 10px;
+    -fx-hgap: 10px;
+    -fx-vgap: 10px;
+}

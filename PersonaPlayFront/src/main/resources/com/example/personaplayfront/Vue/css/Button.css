@@ -1,0 +1,39 @@
+.pager {
+    -fx-alignment: center;
+    -fx-spacing: 10;
+    -fx-background-color: #000;
+    -fx-padding: 20;
+}
+
+.pager-button {
+    -fx-background-color: transparent;
+    -fx-cursor: hand;
+    -fx-padding: 6;
+    -fx-transition: 0.4s;
+}
+
+.pager-button-content {
+    -fx-background-color: transparent;
+    -fx-border-style: none;
+    -fx-cursor: inherit;
+    -fx-font-size: 0;
+    -fx-padding: 0;
+    -fx-pref-width: 42;
+    -fx-pref-height: 42;
+}
+
+.pager-button-background {
+    -fx-background-color: #383142;
+    -fx-border-radius: 15;
+    -fx-pref-width: 100%;
+    -fx-pref-height: 30;
+    -fx-transition: 0.4s;
+}
+
+.pager-button:focused .pager-button-content {
+    -fx-pref-width: 80;
+}
+
+.pager-button:focused .pager-button-background {
+    -fx-background-color: #00c853;
+}

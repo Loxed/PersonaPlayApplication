@@ -1,0 +1,135 @@
+@startuml
+
+title "PersonaPlay Backend Architecture"
+
+'a Media is a movie, tv show, or video game
+' it is composed of a list of ratings
+
+class Media {
+  - status : Status
+  - imdb_id: String
+  - title: String
+  - year: String
+  - rated: String
+  - released: String
+  - runtime: String
+  - genre: String
+  - director: String
+  - writer: String
+  - actors: String
+  - plot: String
+  - language: String
+  - country: String
+  - awards: String
+  - poster: String
+  - metascore: String
+  - imdb_rating: String
+  - imdb_votes: String
+  - type: String
+  - dvd: String
+  - box_office: String
+  - production: String
+  - website: String
+  - response: String
+  - ratings: List<Rating>
+  - visibility : String
+  - available : bool
+  
+  + search_by_title(title: String): List<Media,Status>
+  + search_by_director(director: String): List<Media>
+  + search_by_release_date(release_date: Date): List<Media>
+  + search_by_genre(genre: String): List<Media>
+  + search_by_runtime(runtime: int): List<Media>
+}
+
+' a status is linked with a media via MediaStatus, and determines how much of a film or a show is watched
+class Status {
+    - completion_status : String
+    - completion_time : int
+    - progress : int
+    - max_progress : int
+}
+
+' a media status is a link between a media and a user
+class MediaStatus {
+    - media : Media
+    - status : Status
+}
+
+' a user is a person who uses the application
+' a user has a watchlist, multiple waiting lists, and a payment info
+' they also have a role, which is either admin or user
+class User {
+  - id: int
+  - username: String
+  - password: String
+  - email: String
+  - icon: String
+  - content_filter : bool
+  - payment_info: PaymentInfo
+  - watchlist: MediaList
+  - waiting_list : List<MediaList>
+  - role_id: int
+  
+  + add_to_watchlist(media: Media): void
+  + remove_from_watchlist(media: Media): void
+  + get_watchlist(): List<Media>
+}
+
+' a media list is a list of media statuses
+' it allows for custom lists to be created, and also stores every media watched by a user via "watchlist"
+' it also has customizable tags, 0 or more
+class MediaList {
+    - List<MediaStatus>
+    - name : String
+    - tags : List<String>
+}
+
+' a role is either admin or user
+class Role {
+  - id: int
+  - name: String
+}
+
+' a payment info is a credit card number, expiration date, and CVV
+class PaymentInfo {
+    - card_number : String
+    - expiration_date : Date
+    - CVV : String
+}
+
+' a rating is a source and a value like "imdb" and "8.5", or "rotten tomatoes" and "90%"
+class Ratings {
+    - source: String
+    - value: String
+}
+
+
+' a user rating is a rating given by a user to a media
+' there's only one rating per user per media
+class UserRating {
+    - user : User
+    - media : Media
+    - rating : int
+}
+
+User -l-o Role
+
+User -d-* PaymentInfo
+
+User -r-* MediaList
+
+'Medialist is composed of List<MediaStatus>
+MediaList -u-* MediaStatus
+
+MediaStatus -r-* Media
+MediaStatus -l-* Status
+
+UserRating -l-* User
+UserRating -l-* Media
+
+
+
+Media -u-* Ratings
+
+@enduml
