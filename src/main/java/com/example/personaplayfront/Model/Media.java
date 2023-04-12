@@ -5,8 +5,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "media")
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Media {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    public int id;
+
     @JsonProperty("imdbID")
     public String imdbId;
     @JsonProperty("Title")
@@ -40,7 +49,6 @@ public class Media {
         director = "myDirector";
         plot = "myPlot";
     }
-
 
     //ctor
     public Media(String myjson) {

@@ -20,6 +20,9 @@ module com.example.personaplayfront.Controller.Frontend {
     requires com.fasterxml.jackson.databind;
     requires javafx.web;
     requires jdk.jsobject;
+    requires java.sql;
+    requires java.persistence;
+    requires org.hibernate.orm.core;
 
 
     opens com.example.personaplayfront.Controller.Frontend to javafx.fxml;
