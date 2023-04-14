@@ -4,6 +4,7 @@ import com.example.personaplayfront.Controller.Frontend.PpHomePageController;
 import com.example.personaplayfront.Controller.Frontend.PpLogInController;
 import com.example.personaplayfront.Controller.Handler.ImageHandler;
 import com.example.personaplayfront.Controller.Handler.SessionHandler;
+import com.example.personaplayfront.Repo.HibernateFactory;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +25,8 @@ public class PersonaPlayApplication extends Application {
             imageHandler = new ImageHandler();});
 
         imageHandlerThread.start();
+
+        HibernateFactory.getInstance();
     }
 
     @Override
@@ -64,16 +67,10 @@ public class PersonaPlayApplication extends Application {
         Scene scene = new Scene(root);
 
         //set size to 1080x720
-        primaryStage.setWidth(1280);
-        primaryStage.setHeight(720);
         primaryStage.setResizable(false);
         primaryStage.setTitle("PersonaPlay");
 
-        primaryStage.setMaxHeight(720);
-        primaryStage.setMaxWidth(1280);
-
-        primaryStage.setMinHeight(720);
-        primaryStage.setMinWidth(1280);
+        //
 
         primaryStage.setScene(scene);
         primaryStage.show();

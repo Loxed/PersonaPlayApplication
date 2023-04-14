@@ -2,10 +2,10 @@
 
 title "PersonaPlay Backend Architecture"
 
-'a Media is a movie, tv show, or video game
+'a Medias is a movie, tv show, or video game
 ' it is composed of a list of ratings
 
-class Media {
+class Medias {
   - status : Status
   - imdb_id: String
   - title: String

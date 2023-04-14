@@ -8,6 +8,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -17,6 +19,9 @@ import java.util.Map;
 public class PpLogInController {
     @FXML
     public CheckBox rememberMeCheckBox;
+
+    @FXML
+    public HBox page;
     @FXML
     private TextField usernameTextField;
 
@@ -48,6 +53,9 @@ public class PpLogInController {
 
             System.out.println("sessionPreference : "+sessionPreference);
         });
+
+        //set image background for page
+        page.setStyle("-fx-background-image: url('/com/example/personaplayfront/Icon/personaPlayBg.jpg'); -fx-background-size: cover;");
     }
 
     @FXML

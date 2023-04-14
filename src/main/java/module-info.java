@@ -18,11 +18,16 @@ module com.example.personaplayfront.Controller.Frontend {
     //serde
     requires com.fasterxml.jackson.annotation;
     requires com.fasterxml.jackson.databind;
+
+    //personal
     requires javafx.web;
     requires jdk.jsobject;
     requires java.sql;
-    requires java.persistence;
+
+    //javax naming
+    requires java.naming;
     requires org.hibernate.orm.core;
+    requires jakarta.persistence;
 
 
     opens com.example.personaplayfront.Controller.Frontend to javafx.fxml;

@@ -6,6 +6,9 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
@@ -19,7 +22,22 @@ import java.util.Arrays;
 
 public class PpHomePageController {
     @FXML
-    public HBox mediaDescriptionContainer;
+    public Pane mediaDescriptionContainer;
+
+    @FXML
+    public VBox containerBox;
+
+    //controller
+    @FXML
+    PpMediaDescriptionController mediaDescriptionController;
+
+    @FXML
+    public AnchorPane mediaListContainer;
+
+    //controller
+    @FXML
+    PpMediaCarouselController mediaCarouselController;
+
     @FXML
     public Circle userIcon;
 
@@ -67,21 +85,26 @@ public class PpHomePageController {
     int userImage = 1;
     int userVariant = 0;
     @FXML
-    public void initialize() {
+    public void initialize() throws IOException {
+
+        //fx include in containerBox
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_media_description.fxml"));
+        mediaDescriptionContainer = loader.load();
+        mediaDescriptionController = loader.getController();
+        containerBox.getChildren().add(mediaDescriptionContainer);
+
+        FXMLLoader loader2 = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_media_carousel.fxml"));
+        //fx include in containerBox
+        mediaListContainer = loader2.load();
+        mediaCarouselController = loader2.getController();
+        containerBox.getChildren().add(mediaListContainer);
+        mediaCarouselController.setParentController(this);
+
+
         userName.setText(SessionHandler.decryptSessionId(SessionHandler.getSessionId())[0]);
 
         Parent root;
-
-        //display media description
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_media_description.fxml"));
-            root = loader.load();
-            PpMediaDescriptionController movieDescriptionController = loader.getController();
-            mediaDescriptionContainer.getChildren().add(root);
-            //todo: set movie details based on the movie that was clicked on, and db
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
 
         ImageHandler.getImageAsync(userImage, userVariant, image -> {
             userIcon.setFill(new ImagePattern(image));
@@ -116,13 +139,48 @@ public class PpHomePageController {
                             //switch to corresponding view when clicking on the box
 
                             System.out.println(text.getText());
+
+                            containerBox.getChildren().clear();
+
                             switch (text.getText()) {
                                 case "Home":
-                                    // switch to Home view
+                                    try {
+//                                        Parent root1 = FXMLLoader.load(getClass().getResource("/com/example/personaplayfront/Vue/pp_home_page.fxml"));
+
+                                        //load media description
+                                        FXMLLoader loader1 = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_media_description.fxml"));
+
+                                        mediaDescriptionContainer = loader1.load();
+                                        mediaDescriptionController = loader1.getController();
+
+                                        containerBox.getChildren().add(0, mediaDescriptionContainer);
+
+                                         loader1 = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_media_carousel.fxml"));
+
+                                        mediaListContainer = loader1.load();
+                                        mediaCarouselController = loader1.getController();
+                                        mediaCarouselController.setParentController(this);
+
+                                        containerBox.getChildren().add(1, mediaListContainer);
+
+
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
                                     break;
                                 case "Search":
                                     // switch to Search view
-                                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_search_page.fxml"));
+                                    try {
+
+                                        FXMLLoader loader1 = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_search_page.fxml"));
+                                        Parent root1 = loader1.load();
+
+                                        containerBox.getChildren().add(0, root1);
+
+                                    } catch (IOException e) {
+                                        throw new RuntimeException(e);
+                                    }
+
                                     break;
                                 case "Settings":
                                     // switch to Settings view
@@ -140,11 +198,11 @@ public class PpHomePageController {
                                     break;
                                 case "Trending":
                                     // switch to Trending view
-                                    FXMLLoader loader2 = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_trending.fxml"));
+                                    FXMLLoader loader4 = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_trending.fxml"));
                                     break;
                                 case "Playlists":
                                     // switch to Playlists view
-                                    FXMLLoader loader3 = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_playlists.fxml"));
+                                    FXMLLoader loader5 = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_playlists.fxml"));
                                     break;
                                 case "Log out":
                                     // switch to Login view

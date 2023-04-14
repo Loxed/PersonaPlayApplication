@@ -187,10 +187,12 @@
                   </padding>
       
               </VBox>
-              <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: #000000;">
+              <VBox fx:id="containerBox" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: #000000;">
                   <children>
-                      <HBox fx:id="mediaDescriptionContainer" prefHeight="450.0" prefWidth="1080.0" style="-fx-background-color: #2d2d2d;" />
-                      <HBox fx:id="mediaListContainer" prefHeight="270.0" prefWidth="1080.0" style="-fx-background-color: #202020;" />
+
+
+                      <!--                      <HBox fx:id="mediaDescriptionContainer" prefHeight="450.0" prefWidth="1080.0" style="-fx-background-color: #2d2d2d;" />-->
+<!--                      <HBox fx:id="mediaListContainer" prefHeight="270.0" prefWidth="1080.0" style="-fx-background-color: #202020;" />-->
                   </children>
               </VBox>
               <opaqueInsets>

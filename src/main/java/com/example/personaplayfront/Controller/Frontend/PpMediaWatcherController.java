@@ -4,14 +4,11 @@ import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
+
 import javafx.scene.control.Alert;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
@@ -61,36 +58,18 @@ public class PpMediaWatcherController {
     @FXML
     private MediaView mediaView;
 
-
     private Timeline timeline;
 
     Popup popup;
 
-    @FXML
-    public void initialize() throws IOException {
+    String path;
 
-        //todo: get media path from database
-        String path = "src/main/resources/com/example/personaplayfront/media/video.mp4";
+    public void setPath(String path) {
+        this.path = path;
+    }
 
-        //loadMedia(path,true);
-        loadMedia("https://www.youtube.com/watch?v=L0fw0WzFaBM",false);
-
-        FileInputStream input = new FileInputStream("src/main/resources/com/example/personaplayfront/Icon/white_pause-outline.png");
-
-        //set play button to play
-        playButton.setImage(new Image(input));
-
-        //set volume button to volume high
-        input = new FileInputStream("src/main/resources/com/example/personaplayfront/Icon/white_volume-high-outline.png");
-        volumeButton.setImage(new Image(input));
-
-        //set rewind button to rewind
-        input = new FileInputStream("src/main/resources/com/example/personaplayfront/Icon/white_play-back-outline.png");
-        rewindButton.setImage(new Image(input));
-
-        //set fast forward button to fast forward
-        input = new FileInputStream("src/main/resources/com/example/personaplayfront/Icon/white_play-forward-outline.png");
-        fastForwardButton.setImage(new Image(input));
+    public void loadMedia(String path) {
+        loadMedia(path, true);
 
         //make timeline for progress bar and timestamp
         timeline = new Timeline(new KeyFrame(Duration.seconds(1), event -> {
@@ -167,23 +146,23 @@ public class PpMediaWatcherController {
                 case DIGIT9:
                     mp.seek(mp.getMedia().getDuration().multiply(0.9));
                     break;
-                    //m for mute
+                //m for mute
                 case M:
                     toggleVolume(null);
                     break;
-                    //x and z for 10s forward and back
+                //x and z for 10s forward and back
                 case X:
                     mp.seek(mp.getCurrentTime().add(Duration.seconds(10)));
                     break;
                 case Z:
                     mp.seek(mp.getCurrentTime().subtract(Duration.seconds(10)));
                     break;
-                    //g for togglespeed
+                //g for togglespeed
                 case G:
                     toggleSpeed();
                     speedTooltip();
                     break;
-                    // a and d for 0.1 increments to speed, make sure to check if speed is 0
+                // a and d for 0.1 increments to speed, make sure to check if speed is 0
                 case A:
                     if (mp.getRate() <= 0.1) {
                         mp.setRate(0.1);
@@ -212,7 +191,31 @@ public class PpMediaWatcherController {
             progressTimestamp.setText(timestamp);
         });
     }
+    @FXML
+    public void initialize() throws IOException {
+        //get path from mediadescription
 
+        //todo: get media path from database
+        //String path = "src/main/resources/com/example/personaplayfront/media/video.mp4";
+
+        //loadMedia("https://www.youtube.com/watch?v=L0fw0WzFaBM",false);
+        FileInputStream input = new FileInputStream("src/main/resources/com/example/personaplayfront/Icon/white_pause-outline.png");
+
+        //set play button to play
+        playButton.setImage(new Image(input));
+
+        //set volume button to volume high
+        input = new FileInputStream("src/main/resources/com/example/personaplayfront/Icon/white_volume-high-outline.png");
+        volumeButton.setImage(new Image(input));
+
+        //set rewind button to rewind
+        input = new FileInputStream("src/main/resources/com/example/personaplayfront/Icon/white_play-back-outline.png");
+        rewindButton.setImage(new Image(input));
+
+        //set fast forward button to fast forward
+        input = new FileInputStream("src/main/resources/com/example/personaplayfront/Icon/white_play-forward-outline.png");
+        fastForwardButton.setImage(new Image(input));
+    }
 
 
     private String formatTimestamp(double milliseconds) {
@@ -221,6 +224,7 @@ public class PpMediaWatcherController {
         int seconds = (int) (((milliseconds % (1000 * 60 * 60)) % (1000 * 60)) / 1000);
         return String.format("%02d:%02d:%02d", hours, minutes, seconds);
     }
+
 
     public void loadMedia(String path,boolean isLocal) {
         //todo: get mediatime from db
@@ -260,6 +264,7 @@ public class PpMediaWatcherController {
         System.out.println("loadValid:"+loadValid);
         System.out.println("mediaView:"+mediaView);
     }
+
     @FXML
     public void togglePlay(ActionEvent actionEvent) {
         try {

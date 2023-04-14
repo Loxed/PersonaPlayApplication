@@ -15,23 +15,6 @@ public class ImageHandler {
         initImages();
     }
 
-//    public static void getImageAsync(int id1, int id2, Consumer<Image> callback) {
-//        Task<Image> task = new Task<>() {
-//            @Override
-//            protected Image call() throws Exception {
-//                while (imgNum < 780) {
-//                    Thread.sleep(100);
-//                    System.out.println("imgNum: "+imgNum);
-//                }
-//                return getImage(id1, id2);
-//            }
-//        };
-//
-//        //when the task is done, call the callback function
-//        task.setOnSucceeded(event -> callback.accept(task.getValue()));
-//        new Thread(task).start();
-//    }
-
     public static void getImageAsync(int id1, int id2, Consumer<Image> callback) {
         Task<Image> task = new Task<>() {
             @Override
@@ -49,6 +32,7 @@ public class ImageHandler {
         new Thread(task).start();
     }
 
+//    public static void
     private void initImages() {
 
         imageGrid = new ArrayList<>();

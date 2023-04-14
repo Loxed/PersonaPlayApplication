@@ -14,16 +14,16 @@ package com.example.personaplayfront.Controller.Handler;
 //java
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 //okhttp
-import com.example.personaplayfront.Model.Media;
-import com.fasterxml.jackson.core.JsonProcessingException;
+import com.example.personaplayfront.Model.Medias;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 //jackson
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 public class ApiHandler {
@@ -117,10 +117,12 @@ public class ApiHandler {
 
     //get movies that contain the title
     //https://www.omdbapi.com/?apikey=24becab2&s=matrix
-    public static String OMDBSearchByTitleLike(String name) {
+    public static List<Medias> OMDBFindAllByTitleLike(String name) {
         //complete for id
         String apikkey = "24becab2";
         String urlString = "https://www.omdbapi.com/?apikey=" + apikkey + "&s=" + name;
+
+        List<Medias> mediasList = new ArrayList<>();
 
         try {
             URL url = new URL(urlString);
@@ -136,7 +138,28 @@ public class ApiHandler {
                 String json = response.body().string();
                 System.out.println(json);
 
-                return json;
+                // get the JSON array
+                json = json.substring(json.indexOf("[")+1, json.indexOf("]")+1);
+
+                // get the index of the last occurrence of "imdbID"
+                int lastIndex = json.lastIndexOf("imdbID");
+
+                // while we haven't reached the beginning of the array
+                while (lastIndex >= 0) {
+                    // get the imdbID
+                    String imdbID = json.substring(lastIndex+9, json.indexOf("Type", lastIndex)-3);
+
+                    System.out.println("id: " + imdbID);
+
+                    Medias medias = new Medias(OMDBGetById(imdbID));
+                    mediasList.add(medias);
+
+                    // get the index of the previous occurrence of "imdbID"
+                    lastIndex = json.lastIndexOf("imdbID", lastIndex-1);
+                    //add to list
+                }
+
+                return mediasList;
 
             } catch (IOException e) {
                 e.printStackTrace();

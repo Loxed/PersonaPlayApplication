@@ -1,8 +1,9 @@
 package com.example.personaplayfront.DAO;
 
-import java.util.List;
-public abstract class Dao<T> {
 
+import java.util.List;
+
+public abstract class Dao<T> {
     protected final Class<T> type;
 
     public Dao(Class<T> type) {
@@ -24,12 +25,12 @@ public abstract class Dao<T> {
     //find all entities
     public abstract List<T> findAll();
 
-    //find by property (exact match)
-    public abstract List<T> findByProperty(String propertyName, Object propertyValue);
+    public abstract T findByPropertyLike(String propertyName, Object propertyValue);
+
+    public abstract List<T> findAllByPropertyLike(String propertyName, Object propertyValue);
 
     //get entity type
     public Class<T> getType() {
         return type;
     }
-
 }

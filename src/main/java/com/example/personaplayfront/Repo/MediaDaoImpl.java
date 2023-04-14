@@ -1,69 +1,109 @@
 package com.example.personaplayfront.Repo;
 
-import com.example.personaplayfront.Util.ConnectionUtil;
-import com.example.personaplayfront.Model.Media;
+import com.example.personaplayfront.DAO.Dao;
+import com.example.personaplayfront.Model.Medias;
 
-import java.sql.PreparedStatement;
+import org.hibernate.Session;
+
 import java.util.List;
 
-import org.hibernate.Transaction;
 
-public class MediaDaoImpl extends DaoImpl<Media>{
-    public MediaDaoImpl(Class<Media> type, ConnectionUtil conn) {
-        super(type, conn);
+public class MediaDaoImpl extends Dao<Medias> {
+
+    public MediaDaoImpl() {
+        super(Medias.class);
+
     }
 
     @Override
-    public void save(Media media) {
-        Transaction transaction = null;
-        try {
-            String query = "INSERT INTO media(imdbID,Title,Poster,Genre,Year,Actors,Director,Plot) VALUES (?,?,?,?,?,?,?,?)";
-            PreparedStatement ps = ConnectionUtil.getConnection().prepareStatement(query);
-            ps.setString(1, media.imdbId);
-            ps.setString(2, media.mediaName);
-            ps.setString(3, media.posterUrl);
-            ps.setString(4, media.genres);
-            ps.setString(5, media.year);
-            ps.setString(6, media.actors);
-            ps.setString(7, media.director);
-            ps.setString(8, media.plot);
-            ps.executeUpdate();
-            ps.close();
+    public void save(Medias medias) {
+        try (Session session = HibernateFactory.sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.persist(medias);
+            session.getTransaction().commit();
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     @Override
-    public Media findById(int id) {
-        try {
-            String query = "SELECT * FROM media WHERE id = ?";
-            PreparedStatement ps = ConnectionUtil.getConnection().prepareStatement(query);
-            ps.setInt(1, id);
-            ps.executeQuery();
-            ps.close();
+    public Medias findById(int id) {
+        try (Session session = HibernateFactory.sessionFactory.openSession()) {
+            return session.get(Medias.class, id);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return null;
     }
 
     @Override
-    public void update(Media media) {
-
+    public void update(Medias medias) {
+        try (Session session = HibernateFactory.sessionFactory.openSession()) {
+            session.beginTransaction();
+            session.merge(medias);
+            session.getTransaction().commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
     public boolean deleteById(int id) {
-        return false;
+        try {
+            Session session = HibernateFactory.sessionFactory.openSession();
+            session.beginTransaction();
+            Medias medias = session.get(Medias.class, id);
+            session.remove(medias);
+            session.getTransaction().commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
     @Override
-    public List<Media> findAll() {
+    public List<Medias> findAll() {
+        try (Session session = HibernateFactory.sessionFactory.openSession()) {
+            return session.createQuery("from Medias", Medias.class).list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
     @Override
-    public List<Media> findByProperty(String propertyName, Object propertyValue) {
+    public Medias findByPropertyLike(String propertyName, Object value) {
+        try (Session session = HibernateFactory.sessionFactory.openSession()) {
+            String hql = "select m from Medias m where m." + propertyName + " like CONCAT('%', :value, '%')";
+            return session.createQuery(hql, Medias.class)
+                    .setParameter("value", value)
+                    .setMaxResults(1)
+                    .uniqueResult();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public List<Medias> findAllByPropertyLike(String propertyName, Object value) {
+        try (Session session = HibernateFactory.sessionFactory.openSession()) {
+            String hql = "select m from Medias m where m.genres like CONCAT('%', :value, '%') ORDER BY m.imdbId ASC";
+
+            //if property == "genre", randomize the list
+//            if(propertyName.equals("genres"))
+//                hql+= " ORDER BY m.imdbId ASC";
+//                hql+= " ORDER BY m.imdb_id ASC;";
+
+            return session.createQuery(hql, Medias.class)
+                    .setParameter("value", value)
+                    .list();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 }
+
+//hql to select m from medias m where m.genres like CONCAT('%', :value, '%') ORDER BY m.imdb_id ASC;
