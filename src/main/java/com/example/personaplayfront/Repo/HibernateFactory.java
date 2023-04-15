@@ -1,6 +1,7 @@
 package com.example.personaplayfront.Repo;
 
-import com.example.personaplayfront.Model.Medias;
+import com.example.personaplayfront.Model.*;
+import com.example.personaplayfront.Model.CompositeKeys.*;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 
@@ -18,7 +19,28 @@ public class HibernateFactory {
         configuration.setProperty("hibernate.dialect", "org.hibernate.dialect.MySQLDialect");
         configuration.setProperty("hibernate.show_sql", "true");
 
+        //0NF
         configuration.addAnnotatedClass(Medias.class);
+        configuration.addAnnotatedClass(Users.class);
+        configuration.addAnnotatedClass(Roles.class);
+        configuration.addAnnotatedClass(Stats.class);
+        configuration.addAnnotatedClass(Tags.class);
+        configuration.addAnnotatedClass(Watchlist.class);
+
+        //1NF
+
+        configuration.addAnnotatedClass(UsersMedias.class);
+        configuration.addAnnotatedClass(UsersMediasKey.class);
+
+        configuration.addAnnotatedClass(MediasStats.class);
+        configuration.addAnnotatedClass(MediasStatsKey.class);
+
+        configuration.addAnnotatedClass(WatchlistTags.class);
+        configuration.addAnnotatedClass(WatchlistTagsKey.class);
+
+        //2NF
+        configuration.addAnnotatedClass(WatchlistMediasStats.class);
+        configuration.addAnnotatedClass(WatchlistMediasStatsKey.class);
 
         HibernateFactory.sessionFactory = configuration.buildSessionFactory();
     }

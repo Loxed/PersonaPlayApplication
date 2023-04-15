@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.persistence.*;
+import java.util.Set;
 
 @Entity
 @Table(name = "medias")
@@ -58,13 +59,19 @@ public class Medias {
     @Column(name = "media_location", columnDefinition = "VARCHAR(255) DEFAULT ''")
     public String mediaLocation;
 
+    @OneToMany(mappedBy = "medias")
+    Set<UsersMedias> usersMedias;
+
+    @OneToMany(mappedBy = "medias")
+    Set<MediasStats> mediasStats;
+
     public Medias() {
         //default constructor
         this.imdbId = "tt0106062";
-        this.mediaName = "Matrix";
-        this.posterUrl = "https://m.media-amazon.com/images/M/MV5BYzUzOTA5ZTMtMTdlZS00MmQ5LWFmNjEtMjE5MTczN2RjNjE3XkEyXkFqcGdeQXVyNTc2ODIyMzY@._V1_SX300.jpg";
+        this.mediaName = "The Matrix";
+        this.posterUrl = "https://m.media-amazon.com/images/M/MV5BNzQzOTk3OTAtNDQ0Zi00ZTVkLWI0MTEtMDllZjNkYzNjNTc4L2ltYWdlXkEyXkFqcGdeQXVyNjU0OTQ0OTY@._V1_SX300.jpg";
         this.genres = "Action, Sci-Fi";
-        this.year = "1993";
+        this.year = "1999";
         this.actors = "Keanu Reeves, Laurence Fishburne, Carrie-Anne Moss, Hugo Weaving";
         this.director = "Lana Wachowski";
         this.plot = "A computer hacker learns from mysterious rebels about the true nature of his reality and his role in the war against its controllers.";
