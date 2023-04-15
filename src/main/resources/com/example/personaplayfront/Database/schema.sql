@@ -20,27 +20,30 @@ CREATE TABLE `personaplay`.`roles` (
   `name` VARCHAR(45)  NOT NULL UNIQUE;
 ) ENGINE = InnoDB;
 
-CREATE TABLE `personaplay`.`users` (
-  `id` INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-  `username` VARCHAR(45) NOT NULL UNIQUE,
-  `password` VARCHAR(45) NOT NULL,
-  `email` VARCHAR(64) NOT NULL UNIQUE,
-  `content_filter` TINYINT(1) NOT NULL DEFAULT 0,
-  `role_id` INT NOT NULL,
-  CONSTRAINT `fk_users_roles`
-    FOREIGN KEY (`role_id`)
-    REFERENCES `personaplay`.`roles` (`id`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION
-) ENGINE = InnoDB;
+CREATE TABLE `users` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(45) NOT NULL,
+  `password` varchar(45) NOT NULL,
+  `email` varchar(64) NOT NULL,
+  `content_filter` tinyint(1) NOT NULL DEFAULT '0',
+  `role_id` int NOT NULL,
+  `icon_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`),
+  UNIQUE KEY `email` (`email`),
+  KEY `fk_users_roles` (`role_id`),
+  KEY `fk_users_icon_idx` (`icon_id`),
+  CONSTRAINT `fk_users_roles` FOREIGN KEY (`role_id`) REFERENCES `roles` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+
 
 CREATE TABLE `icon` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `icon` int NOT NULL,
-  `variant` int NOT NULL,
+  `icon` int NOT NULL DEFAULT '0',
+  `variant` int NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   CONSTRAINT `users_id` FOREIGN KEY (`id`) REFERENCES `users` (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
 
 --user-medias

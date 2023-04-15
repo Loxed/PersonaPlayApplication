@@ -70,4 +70,14 @@ public class Ratings {
     public void setMedia(Medias media) {
         this.media = media;
     }
+
+    @Override
+    public String toString() {
+        return "Ratings{" +
+                "id=" + id +
+                ", rating=" + rating +
+                ", ratingCount=" + ratingCount +
+                ", media=" + media +
+                '}';
+    }
 }

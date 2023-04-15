@@ -11,9 +11,11 @@ import java.util.List;
 //personal
 import com.example.personaplayfront.Controller.Handler.ApiHandler;
 
+import com.example.personaplayfront.Model.Icon;
 import com.example.personaplayfront.Model.Medias;
-import com.example.personaplayfront.Repo.HibernateFactory;
-import com.example.personaplayfront.Repo.MediaDaoImpl;
+import com.example.personaplayfront.Model.Roles;
+import com.example.personaplayfront.Model.Users;
+import com.example.personaplayfront.Repo.*;
 
 
 public class ApiApplication {
@@ -50,11 +52,19 @@ public class ApiApplication {
 //        }
 
 
+//
+//        List<Medias> my_medias = ApiHandler.OMDBFindAllByTitleLike("Matrix");
+//        System.out.println(my_medias);
+//
 
-        List<Medias> my_medias = ApiHandler.OMDBFindAllByTitleLike("Matrix");
-        System.out.println(my_medias);
+        UsersDaoImpl usersDao = new UsersDaoImpl();
+        RolesDaoImpl rolesDao = new RolesDaoImpl();
 
+        Users charlie = new Users("charlie","Persona4","charlie@personaplay.com",false,rolesDao.findById(3));
 
+        System.out.println(charlie);
+
+        usersDao.save(charlie);
     }
 
 }

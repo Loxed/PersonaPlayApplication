@@ -33,7 +33,9 @@ public class Users {
 
 
     public Users() {
+
     }
+
 
     public Users(String username, String password, String email, boolean contentFilter, Roles role) {
         this.username = username;
@@ -89,6 +91,26 @@ public class Users {
 
     public void setRole(Roles role) {
         this.role = role;
+    }
+
+    public Set<UsersMedias> getUsersMedias() {
+        return usersMedias;
+    }
+
+    public void setUsersMedias(Set<UsersMedias> usersMedias) {
+        this.usersMedias = usersMedias;
+    }
+
+    @Override
+    public String toString() {
+        return "Users{" +
+                "id=" + id +
+                ", username=" + username +
+                ", password=" + password +
+                ", email=" + email +
+                ", contentFilter=" + contentFilter +
+                ", role=" + role +
+                '}';
     }
 
 }

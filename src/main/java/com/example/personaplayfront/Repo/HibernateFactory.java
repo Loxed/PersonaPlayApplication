@@ -20,9 +20,11 @@ public class HibernateFactory {
         configuration.setProperty("hibernate.show_sql", "true");
 
         //0NF
-        configuration.addAnnotatedClass(Medias.class);
-        configuration.addAnnotatedClass(Users.class);
         configuration.addAnnotatedClass(Roles.class);
+        configuration.addAnnotatedClass(Icon.class);
+        configuration.addAnnotatedClass(Medias.class);
+
+        configuration.addAnnotatedClass(Users.class);
         configuration.addAnnotatedClass(Stats.class);
         configuration.addAnnotatedClass(Tags.class);
         configuration.addAnnotatedClass(Watchlist.class);

@@ -8,8 +8,8 @@ package com.example.personaplayfront.Model;
 //  CONSTRAINT `users_id` FOREIGN KEY (`id`) REFERENCES `users` (`id`)
 //) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
+import com.example.personaplayfront.Repo.IconDaoImpl;
 import jakarta.persistence.*;
-
 
 @Entity
 @Table(name = "icon")
@@ -26,6 +26,7 @@ public class Icon {
     private int variant;
 
     public Icon() {
+
     }
 
     public Icon(int icon, int variant) {

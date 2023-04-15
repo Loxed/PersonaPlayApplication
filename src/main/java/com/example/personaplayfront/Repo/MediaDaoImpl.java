@@ -91,10 +91,6 @@ public class MediaDaoImpl extends Dao<Medias> {
         try (Session session = HibernateFactory.sessionFactory.openSession()) {
             String hql = "select m from Medias m where m.genres like CONCAT('%', :value, '%') ORDER BY m.imdbId ASC";
 
-            //if property == "genre", randomize the list
-//            if(propertyName.equals("genres"))
-//                hql+= " ORDER BY m.imdbId ASC";
-//                hql+= " ORDER BY m.imdb_id ASC;";
 
             return session.createQuery(hql, Medias.class)
                     .setParameter("value", value)

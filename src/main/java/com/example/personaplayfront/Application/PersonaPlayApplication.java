@@ -4,7 +4,9 @@ import com.example.personaplayfront.Controller.Frontend.PpHomePageController;
 import com.example.personaplayfront.Controller.Frontend.PpLogInController;
 import com.example.personaplayfront.Controller.Handler.ImageHandler;
 import com.example.personaplayfront.Controller.Handler.SessionHandler;
+import com.example.personaplayfront.Model.Users;
 import com.example.personaplayfront.Repo.HibernateFactory;
+import com.example.personaplayfront.Repo.UsersDaoImpl;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -12,10 +14,13 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.util.Arrays;
+
 
 public class PersonaPlayApplication extends Application {
     static ImageHandler imageHandler;
 
+    UsersDaoImpl usersDao = new UsersDaoImpl();
     @Override
 
     public void init() {
@@ -37,6 +42,15 @@ public class PersonaPlayApplication extends Application {
         String sessionId = SessionHandler.getSessionId();
 
         System.out.println(sessionId);
+
+        String uname = SessionHandler.decryptSessionId(sessionId)[0];
+
+        System.out.println(uname);
+
+        //create Users object from uname
+        Users user = usersDao.findByPropertyLike("username", uname);
+
+        System.out.println(user);
 
         Parent root;
 
