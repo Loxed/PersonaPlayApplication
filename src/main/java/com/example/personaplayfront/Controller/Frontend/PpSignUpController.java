@@ -4,12 +4,15 @@ import com.example.personaplayfront.Model.Roles;
 import com.example.personaplayfront.Model.Users;
 import com.example.personaplayfront.Repo.RolesDaoImpl;
 import com.example.personaplayfront.Repo.UsersDaoImpl;
+import javafx.animation.Animation;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -20,6 +23,7 @@ import javax.mail.internet.MimeMessage;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.sql.Time;
 import java.util.Properties;
 import java.util.Random;
 
@@ -33,6 +37,7 @@ public class PpSignUpController {
     public TextField confirmationCodeTextField;
     @FXML
     public TextField emailTextField;
+    public ScrollPane scrollpage;
     @FXML
     private TextField usernameTextField;
 
@@ -50,66 +55,136 @@ public class PpSignUpController {
     public void initialize() {
         usersDao = new UsersDaoImpl();
 
-        signUpView.setVisible(true);
-        confirmSignUpView.setVisible(false);
+        //disable
+        confirmSignUpView.setDisable(true);
+
+
+        //disable scrolling for scrollpage
+        scrollpage.setHbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
+        scrollpage.setVbarPolicy(ScrollPane.ScrollBarPolicy.NEVER);
     }
 
     @FXML
     private void handleSignUp(ActionEvent event) throws IOException {
-
         //regex to check correct mail
         String regex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
 
         if(emailTextField.getText().matches(regex)) {
-            try {
-                usermail = usersDao.findByPropertyLike("email", emailTextField.getText());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            try {
-                user = usersDao.findByPropertyLike("username", usernameTextField.getText());
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            if(usermail!=null)
-                if(usermail.getEmail().equals(emailTextField.getText())){
+
+            usermail = usersDao.findByPropertyLike("email", emailTextField.getText());
+
+            user = usersDao.findByPropertyLike("username", usernameTextField.getText());
+
+            //if mail exists
+            if(usermail!=null) {
+                //if mail is already taken
+                if (usermail.getEmail().equals(emailTextField.getText())) {
+                    //show error
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
                     alert.setHeaderText("Email already taken");
                     alert.showAndWait();
+                    //else if username is not null
+                } else if (user != null) {
+                    //if username is already taken
+                    if (user.getUsername().equals(usernameTextField.getText())) {
+                        //show error
+                        Alert alert = new Alert(Alert.AlertType.ERROR);
+                        alert.setTitle("Error");
+                        alert.setHeaderText("Username already taken");
+                        alert.showAndWait();
+                    } else {
+                        //else send confirmation code
+                        System.out.println("Sending confirmation code");
+                        Thread thread = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                sendConfirmationCode();
+                            }
+                        });
+                        thread.start();
+
+                        //switch to confirm sign up view
+                        signUpView.setDisable(true);
+                        confirmSignUpView.setDisable(false);
+
+                        //transition to scroll down the scroll pane to the bottom
+                        Timeline timeline = new Timeline();
+
+                        timeline.setCycleCount(Timeline.INDEFINITE);
+                        timeline.getKeyFrames().add(new javafx.animation.KeyFrame(javafx.util.Duration.millis(10), event1 -> {
+                            scrollpage.setVvalue(scrollpage.getVvalue() + 0.01);
+                            if (scrollpage.getVvalue() == 1.0) {
+                                timeline.stop();
+                            }
+                        }));
+                        timeline.play();
+                    }
                 } else {
-                    //send confirmation code to email
-                    sendConfirmationCode();
+                    //else send confirmation code
+                    System.out.println("Sending confirmation code");
+                    Thread thread = new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            sendConfirmationCode();
+                        }
+                    });
+                    thread.start();
+
                     //switch to confirm sign up view
-                    signUpView.setVisible(false);
-                    confirmSignUpView.setVisible(true);
+                    signUpView.setDisable(true);
+                    confirmSignUpView.setDisable(false);
+
+                    //transition to scroll down the scroll pane to the bottom
+                    Timeline timeline = new Timeline();
+
+                    timeline.setCycleCount(Timeline.INDEFINITE);
+                    timeline.getKeyFrames().add(new javafx.animation.KeyFrame(javafx.util.Duration.millis(10), event1 -> {
+                        scrollpage.setVvalue(scrollpage.getVvalue() + 0.01);
+                        if (scrollpage.getVvalue() == 1.0) {
+                            timeline.stop();
+                        }
+                    }));
+                    timeline.play();
                 }
-            else if(user!=null)
-                if(user.getUsername().equals(usernameTextField.getText())){
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error");
-                    alert.setHeaderText("Username already taken");
-                    alert.showAndWait();
-                } else {
-                    //send confirmation code to email
-                    sendConfirmationCode();
-                    //switch to confirm sign up view
-                    signUpView.setVisible(false);
-                    confirmSignUpView.setVisible(true);
-                }
-            else {
-                //send confirmation code to email
-                sendConfirmationCode();
+            } else if (user != null && user.getUsername().equals(usernameTextField.getText())) {
+                //show error
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setHeaderText("Username already taken");
+                alert.showAndWait();
+            } else {
+                //else send confirmation code
+                System.out.println("Sending confirmation code");
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        sendConfirmationCode();
+                    }
+                });
+                thread.start();
+
                 //switch to confirm sign up view
-                signUpView.setVisible(false);
-                confirmSignUpView.setVisible(true);
+                signUpView.setDisable(true);
+                confirmSignUpView.setDisable(false);
+
+                //transition to scroll down the scroll pane to the bottom
+                Timeline timeline = new Timeline();
+
+                timeline.setCycleCount(Timeline.INDEFINITE);
+                timeline.getKeyFrames().add(new javafx.animation.KeyFrame(javafx.util.Duration.millis(10), event1 -> {
+                    scrollpage.setVvalue(scrollpage.getVvalue() + 0.01);
+                    if (scrollpage.getVvalue() == 1.0) {
+                        timeline.stop();
+                    }
+                }));
+                timeline.play();
             }
-        }
-        else {
+        } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
-            alert.setHeaderText("Email incorrect");
-            alert.setContentText("Veuillez entrer une adresse email valide");
+            alert.setHeaderText("Invalid email");
+            alert.setContentText("Please enter a valid email");
             alert.showAndWait();
         }
     }
@@ -215,7 +290,6 @@ public class PpSignUpController {
             confirmationCode = verificationCode;
 
             html = html.replace("{{code}}", String.valueOf(verificationCode));
-
 
             // Send the actual HTML message, as big as you like
             message.setContent(html, "text/html");

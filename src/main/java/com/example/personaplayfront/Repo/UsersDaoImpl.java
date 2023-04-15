@@ -87,7 +87,7 @@ public class UsersDaoImpl extends Dao<Users> {
                     .setParameter("propertyValue", "%" + propertyValue + "%")
                     .getSingleResult();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("No "+propertyName+" found!");
         }
         return null;
     }

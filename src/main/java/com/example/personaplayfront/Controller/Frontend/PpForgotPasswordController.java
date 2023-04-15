@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -36,6 +37,7 @@ public class PpForgotPasswordController {
 
     @FXML
     public TextField passwordTextField;
+    public ScrollPane scrollpage;
 
     private String code;
 
@@ -48,8 +50,8 @@ public class PpForgotPasswordController {
     public void initialize() {
         usersDao = new UsersDaoImpl();
         //hide enter code and reset password views
-        enterCodeVBox.setVisible(false);
-        resetPasswordVBox.setVisible(false);
+        enterCodeVBox.setDisable(true);
+        resetPasswordVBox.setDisable(true);
     }
 
     @FXML
@@ -76,8 +78,9 @@ public class PpForgotPasswordController {
             resetPasswordMail();
 
             //hide current view, and show hidden view
-            forgotPasswordVBox.setVisible(false);
-            enterCodeVBox.setVisible(true);
+            forgotPasswordVBox.setDisable(true);
+            enterCodeVBox.setDisable(false);
+            scrollpage.setVvalue(0.5);
 
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
@@ -172,8 +175,10 @@ public class PpForgotPasswordController {
     public void confirmResetCode(ActionEvent actionEvent) {
         if(codeTextField.getText().equals(code)) {
             //hide current view, and show hidden view
-            enterCodeVBox.setVisible(false);
-            resetPasswordVBox.setVisible(true);
+            enterCodeVBox.setDisable(true);
+            resetPasswordVBox.setDisable(false);
+
+            scrollpage.setVvalue(1);
 
         } else {
             Alert alert = new Alert(Alert.AlertType.ERROR);

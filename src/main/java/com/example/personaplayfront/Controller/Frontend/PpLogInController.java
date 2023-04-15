@@ -6,14 +6,25 @@ import com.example.personaplayfront.Repo.UsersDaoImpl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
+import javafx.scene.image.Image;
+import javafx.scene.layout.*;
+import javafx.scene.paint.ImagePattern;
 import javafx.stage.Stage;
 
+
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.paint.RadialGradient;
+import javafx.scene.paint.Stop;
+
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -24,9 +35,14 @@ public class PpLogInController {
 
     @FXML
     public HBox page;
+    public AnchorPane bgPane;
+    public Pane gradientPane;
+    public Button LogInButton;
+    public Button SignUpButton;
+    public Button PasswordButton;
+    public Circle logo;
     @FXML
     private TextField usernameTextField;
-
     @FXML
     private TextField passwordTextField;
 
@@ -35,7 +51,7 @@ public class PpLogInController {
     UsersDaoImpl usersDaoImpl = new UsersDaoImpl();
 
     @FXML
-    public void initialize() {
+    public void initialize() throws FileNotFoundException {
         rememberMeCheckBox.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 // Checkbox is checked, perform action
@@ -49,8 +65,13 @@ public class PpLogInController {
             System.out.println("sessionPreference : "+sessionPreference);
         });
 
-        //set image background for page
-        page.setStyle("-fx-background-image: url('/com/example/personaplayfront/Icon/personaPlayBg.jpg'); -fx-background-size: cover;");
+        //fileinputstream
+
+        FileInputStream input = new FileInputStream("src/main/resources/com/example/personaplayfront/Icon/personaPlayLogo.png");
+
+        //set logo as image pattern
+        logo.setFill(new ImagePattern(new Image(input)));
+
     }
 
     @FXML
