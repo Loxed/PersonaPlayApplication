@@ -86,8 +86,6 @@ public class PpHomePageController {
     UsersDaoImpl usersDaoImpl = new UsersDaoImpl();
     IconDaoImpl iconDaoImpl = new IconDaoImpl();
 
-    //set email to the email of the user that's logged in, depending on the session id
-
     //todo: get user image from db
     int userImage = 1;
     int userVariant = 0;

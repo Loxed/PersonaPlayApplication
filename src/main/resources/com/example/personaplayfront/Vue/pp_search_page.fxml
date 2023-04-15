@@ -8,7 +8,6 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
@@ -27,6 +26,15 @@
                         <Insets bottom="10.0" left="10.0" right="10.0" top="50.0" />
                      </VBox.margin>
                      <children>
+                        <Button fx:id="onlineButton" alignment="CENTER" minHeight="0.0" mnemonicParsing="false" onAction="#onlineSearch" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #202020; -fx-background-radius: 25;">
+                           <graphic>
+                              <ImageView fx:id="wifiImage" fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../Icon/white_wifi-outline.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
                         <TextField fx:id="searchBar" prefHeight="40.0" prefWidth="600.0" promptText="Search a movie.." style="-fx-background-color: #202020; -fx-border-radius: 5;">
                            <font>
                               <Font name="Eras Light ITC" size="20.0" />
@@ -56,9 +64,9 @@
                   </Text>
                </children>
             </VBox>
-            <ScrollPane hbarPolicy="NEVER" prefHeight="540.0" prefWidth="1080.0" vbarPolicy="NEVER">
+            <ScrollPane fx:id="containerScroll" hbarPolicy="NEVER" prefHeight="540.0" prefWidth="1080.0" vbarPolicy="NEVER">
                <content>
-                  <Pane prefHeight="540.0" prefWidth="1080.0" style="-fx-background-color: #202020;" />
+                  <VBox fx:id="CarouselContainer" alignment="TOP_CENTER" prefHeight="540.0" prefWidth="1080.0" style="-fx-background-color: #202020;" />
                </content>
             </ScrollPane>
          </children>

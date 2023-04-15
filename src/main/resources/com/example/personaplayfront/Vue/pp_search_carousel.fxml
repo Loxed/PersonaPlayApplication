@@ -7,17 +7,32 @@
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
-<VBox fx:id="movieCarousel" prefHeight="270.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.personaplayfront.Controller.Frontend.PpSearchCarouselContainer">
+<VBox fx:id="movieCarousel" prefHeight="300.0" prefWidth="1080.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.personaplayfront.Controller.Frontend.PpSearchCarouselController">
    <children>
+      <HBox fx:id="CategoryBox" prefHeight="50.0" prefWidth="200.0">
+         <children>
+            <Text fx:id="categoryName" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="By Category">
+               <HBox.margin>
+                  <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+               </HBox.margin>
+               <font>
+                  <Font name="Eras Demi ITC" size="20.0" />
+               </font>
+            </Text>
+         </children>
+      </HBox>
       <HBox alignment="CENTER" prefHeight="250.0" prefWidth="1080.0">
          <children>
             <VBox fx:id="Box1" alignment="CENTER" prefHeight="250.0" prefWidth="180.0">
                <children>
                   <ImageView fx:id="img1" fitHeight="203.0" fitWidth="135.0" pickOnBounds="true" preserveRatio="true" />
-                  <Text fx:id="name1" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="MediaName">
+                  <Text fx:id="name1" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="MediaName" textAlignment="CENTER">
                      <font>
-                        <Font name="Eras Light ITC" size="20.0" />
+                        <Font name="Eras Light ITC" size="14.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="0.0" right="0.0" top="10.0" />
+                     </VBox.margin>
                   </Text>
                </children>
                <padding>
@@ -27,10 +42,13 @@
             <VBox fx:id="Box2" alignment="CENTER" prefHeight="250.0" prefWidth="180.0">
                <children>
                   <ImageView fx:id="img2" fitHeight="203.0" fitWidth="135.0" pickOnBounds="true" preserveRatio="true" />
-                  <Text fx:id="name2" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="MediaName">
+                  <Text fx:id="name2" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="MediaName" textAlignment="CENTER">
                      <font>
-                        <Font name="Eras Light ITC" size="20.0" />
+                        <Font name="Eras Light ITC" size="14.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="0.0" right="0.0" top="10.0" />
+                     </VBox.margin>
                   </Text>
                </children>
                <padding>
@@ -40,10 +58,13 @@
             <VBox fx:id="Box3" alignment="CENTER" prefHeight="250.0" prefWidth="180.0">
                <children>
                   <ImageView fx:id="img3" fitHeight="203.0" fitWidth="135.0" pickOnBounds="true" preserveRatio="true" />
-                  <Text fx:id="name3" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="MediaName">
+                  <Text fx:id="name3" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="MediaName" textAlignment="CENTER">
                      <font>
-                        <Font name="Eras Light ITC" size="20.0" />
+                        <Font name="Eras Light ITC" size="14.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="0.0" right="0.0" top="10.0" />
+                     </VBox.margin>
                   </Text>
                </children>
                <padding>
@@ -53,10 +74,13 @@
             <VBox fx:id="Box4" alignment="CENTER" prefHeight="250.0" prefWidth="180.0">
                <children>
                   <ImageView fx:id="img4" fitHeight="203.0" fitWidth="135.0" pickOnBounds="true" preserveRatio="true" />
-                  <Text fx:id="name4" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="MediaName">
+                  <Text fx:id="name4" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="MediaName" textAlignment="CENTER">
                      <font>
-                        <Font name="Eras Light ITC" size="20.0" />
+                        <Font name="Eras Light ITC" size="14.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="0.0" right="0.0" top="10.0" />
+                     </VBox.margin>
                   </Text>
                </children>
                <padding>
@@ -66,10 +90,13 @@
             <VBox fx:id="Box5" alignment="CENTER" prefHeight="250.0" prefWidth="180.0">
                <children>
                   <ImageView fx:id="img5" fitHeight="203.0" fitWidth="135.0" pickOnBounds="true" preserveRatio="true" />
-                  <Text fx:id="name5" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="MediaName">
+                  <Text fx:id="name5" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="MediaName" textAlignment="CENTER">
                      <font>
-                        <Font name="Eras Light ITC" size="20.0" />
+                        <Font name="Eras Light ITC" size="14.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="0.0" right="0.0" top="10.0" />
+                     </VBox.margin>
                   </Text>
                </children>
                <padding>
@@ -79,10 +106,13 @@
             <VBox fx:id="Box6" alignment="CENTER" prefHeight="250.0" prefWidth="180.0">
                <children>
                   <ImageView fx:id="img6" fitHeight="203.0" fitWidth="135.0" pickOnBounds="true" preserveRatio="true" />
-                  <Text fx:id="name6" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="MediaName">
+                  <Text fx:id="name6" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="MediaName" textAlignment="CENTER">
                      <font>
-                        <Font name="Eras Light ITC" size="20.0" />
+                        <Font name="Eras Light ITC" size="14.0" />
                      </font>
+                     <VBox.margin>
+                        <Insets bottom="10.0" left="0.0" right="0.0" top="10.0" />
+                     </VBox.margin>
                   </Text>
                </children>
                <padding>
@@ -96,6 +126,9 @@
          <padding>
             <Insets left="10.0" right="10.0" />
          </padding>
+         <VBox.margin>
+            <Insets left="10.0" right="10.0" />
+         </VBox.margin>
       </HBox>
    </children>
 </VBox>

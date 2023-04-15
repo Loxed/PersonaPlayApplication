@@ -61,8 +61,6 @@ public class PpMediaDescriptionController {
         //if the selected media is available, play it
         if(!play_media.isDisabled()){
             //create a new window with the media player
-
-            //todo: get media link
             //switch to the media player
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_media_watcher.fxml"));
             try {
