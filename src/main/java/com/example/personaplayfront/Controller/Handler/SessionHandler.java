@@ -11,8 +11,15 @@ public class SessionHandler {
         StringBuilder ciphertext = new StringBuilder();
         for (char c : plaintext.toCharArray()) {
             if (Character.isLetter(c)) {
-                char shifted = (char) ((c - 'a' + 3) % 26 + 'a'); // apply shift and wrap around alphabet
-                ciphertext.append(shifted);
+                //make sure letters that overflow go to the beginning of the alphabet
+                if (Character.isUpperCase(c)) {
+                    char shifted = (char) ((c - 'A' + 3) % 26 + 'A'); // apply shift and wrap around alphabet
+                    ciphertext.append(shifted);
+                } else {
+                    char shifted = (char) ((c - 'a' + 3) % 26 + 'a'); // apply shift and wrap around alphabet
+                    ciphertext.append(shifted);
+                }
+
             } else {
                 ciphertext.append(c);
             }
@@ -20,15 +27,24 @@ public class SessionHandler {
         return ciphertext.toString();
     }
     public static String decrypt(String ciphertext) {
+        //ceasar cipher for ascii (a-z and A-Z)
         StringBuilder plaintext = new StringBuilder();
         for (char c : ciphertext.toCharArray()) {
             if (Character.isLetter(c)) {
-                char unshifted = (char) ((c - 'a' - 3 + 26) % 26 + 'a'); // unshift and wrap around alphabet
-                plaintext.append(unshifted);
+                //make sure letters that overflow go to the end of the alphabet
+                if (Character.isUpperCase(c)) {
+                    char shifted = (char) ((c - 'A' - 3 + 26) % 26 + 'A'); // apply shift and wrap around alphabet
+                    plaintext.append(shifted);
+                } else {
+                    char shifted = (char) ((c - 'a' - 3 + 26) % 26 + 'a'); // apply shift and wrap around alphabet
+                    plaintext.append(shifted);
+                }
+
             } else {
                 plaintext.append(c);
             }
         }
+
         return plaintext.toString();
     }
     public static String encryptSessionId(String username, String hashedPassword) {

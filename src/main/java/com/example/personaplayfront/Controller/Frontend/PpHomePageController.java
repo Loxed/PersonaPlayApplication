@@ -2,6 +2,10 @@ package com.example.personaplayfront.Controller.Frontend;
 
 import com.example.personaplayfront.Controller.Handler.ImageHandler;
 import com.example.personaplayfront.Controller.Handler.SessionHandler;
+import com.example.personaplayfront.Model.Icon;
+import com.example.personaplayfront.Model.Users;
+import com.example.personaplayfront.Repo.IconDaoImpl;
+import com.example.personaplayfront.Repo.UsersDaoImpl;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -79,6 +83,9 @@ public class PpHomePageController {
     @FXML
     Text userName;
 
+    UsersDaoImpl usersDaoImpl = new UsersDaoImpl();
+    IconDaoImpl iconDaoImpl = new IconDaoImpl();
+
     //set email to the email of the user that's logged in, depending on the session id
 
     //todo: get user image from db
@@ -86,7 +93,6 @@ public class PpHomePageController {
     int userVariant = 0;
     @FXML
     public void initialize() throws IOException {
-
         //fx include in containerBox
 
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_media_description.fxml"));
@@ -103,6 +109,23 @@ public class PpHomePageController {
 
 
         userName.setText(SessionHandler.decryptSessionId(SessionHandler.getSessionId())[0]);
+
+        //set user icon
+        //get user from db
+
+        Users user = usersDaoImpl.findByPropertyLike("username", SessionHandler.decryptSessionId(SessionHandler.getSessionId())[0]);
+
+        //get icon from user id
+        Icon icon = iconDaoImpl.findByPropertyLike("id", user.getId());
+
+        System.out.println(icon);
+
+        //set icon
+        userImage = icon.getIcon();
+
+        //set variant
+        userVariant = icon.getVariant();
+
 
         Parent root;
 
@@ -219,8 +242,7 @@ public class PpHomePageController {
                     }
                 }));
 
-//HBox on mouse exited
-
+        //HBox on mouse exited
         Arrays.asList(homeBox, searchBox, settingsBox, trendingBox, playlistsBox, logOutBox)
                 .forEach(node -> node.setOnMouseExited(event4 -> {
                     if (node.getChildren().size() > 1 && node.getChildren().get(1) instanceof Text text) {
@@ -230,7 +252,6 @@ public class PpHomePageController {
                 }));
 
     }
-
     @FXML
     private void handleProfileView() throws IOException{
         //go to the profile page

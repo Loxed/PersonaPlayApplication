@@ -1,6 +1,11 @@
 package com.example.personaplayfront.Controller.Frontend;
 
 import com.example.personaplayfront.Controller.Handler.ImageHandler;
+import com.example.personaplayfront.Controller.Handler.SessionHandler;
+import com.example.personaplayfront.Model.Icon;
+import com.example.personaplayfront.Model.Users;
+import com.example.personaplayfront.Repo.IconDaoImpl;
+import com.example.personaplayfront.Repo.UsersDaoImpl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -54,13 +59,24 @@ public class PpProfileSwitcherController {
     public Button confirm_button;
 
     //todo: get info from database
+    UsersDaoImpl usersDaoImpl;
+    IconDaoImpl iconDaoImpl;
+
     int currentAvatar = 0;
     int currentVariant = 0;
+
+    //session
+
 
     @FXML
     private Rectangle chosenImg;
 
     public void initialize() {
+        usersDaoImpl = new UsersDaoImpl();
+        iconDaoImpl = new IconDaoImpl();
+
+        //get avatar and variant from database
+
         // loop from 0 to 9 instead of using count variable
         for (int i = 0; i < 10; i++) {
 
@@ -147,6 +163,17 @@ public class PpProfileSwitcherController {
 
     @FXML
     public void handleConfirm(ActionEvent actionEvent) throws IOException {
+
+        //save icon choice in database
+
+        Users user = usersDaoImpl.findByPropertyLike("username", SessionHandler.decryptSessionId(SessionHandler.getSessionId())[0]);
+        Icon icon = iconDaoImpl.findById(user.getId());
+
+        icon.setVariant(currentVariant);
+        icon.setIcon(currentAvatar);
+
+        iconDaoImpl.update(icon);
+
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_home_page.fxml"));
         Parent root = loader.load();
         PpHomePageController controller = loader.getController();

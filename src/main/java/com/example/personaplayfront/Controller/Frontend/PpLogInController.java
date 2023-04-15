@@ -1,6 +1,8 @@
 package com.example.personaplayfront.Controller.Frontend;
 
 import com.example.personaplayfront.Controller.Handler.SessionHandler;
+import com.example.personaplayfront.Model.Users;
+import com.example.personaplayfront.Repo.UsersDaoImpl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -30,14 +32,7 @@ public class PpLogInController {
 
     private static boolean sessionPreference=false;
 
-    private static final Map<String, String> USERS = new HashMap<>(); // Map of usernames to hashed passwords
-    private static final Map<String, String> SESSIONS = new HashMap<>(); // Map of session IDs to usernames
-
-    static {
-        // Add some example users to the USERS map
-        USERS.put("alice", SessionHandler.hashPassword("password1"));
-        USERS.put("bob", SessionHandler.hashPassword("password2"));
-    }
+    UsersDaoImpl usersDaoImpl = new UsersDaoImpl();
 
     @FXML
     public void initialize() {
@@ -62,15 +57,24 @@ public class PpLogInController {
     private void handleLogIn(ActionEvent event) throws IOException {
         String username = usernameTextField.getText();
         String password = passwordTextField.getText();
-        String hashedPassword = USERS.get(username);
-        if (hashedPassword != null && hashedPassword.equals(SessionHandler.hashPassword(password))) {
+
+        //get user from db
+        Users user = usersDaoImpl.findByPropertyLike("username", username);
+        System.out.println("user : "+user);
+
+        if(user==null)
+            user = usersDaoImpl.findByPropertyLike("email", username);
+
+        if(user!=null && (username.equals(user.getUsername()) || username.equals(user.getEmail())) && password.equals(user.getPassword())) {
             //save session id in the SessionHandler
             if(sessionPreference) {
-                SessionHandler.saveSessionId(SessionHandler.encryptSessionId(username,hashedPassword));
+                SessionHandler.saveSessionId(SessionHandler.encryptSessionId(user.getUsername(), user.getPassword()));
             } else {
-                SessionHandler.saveSessionId(SessionHandler.encryptSessionId(username,""));
+                SessionHandler.saveSessionId(SessionHandler.encryptSessionId(user.getUsername(),""));
             }
             SessionHandler.displaySessionId();
+
+            System.out.println(SessionHandler.decrypt(SessionHandler.getSessionId()));
 
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_home_page.fxml"));
             Parent root = loader.load();

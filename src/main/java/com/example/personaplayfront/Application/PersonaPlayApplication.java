@@ -43,26 +43,36 @@ public class PersonaPlayApplication extends Application {
 
         System.out.println(sessionId);
 
-        String uname = SessionHandler.decryptSessionId(sessionId)[0];
-
-        System.out.println(uname);
-
-        //create Users object from uname
-        Users user = usersDao.findByPropertyLike("username", uname);
-
-        System.out.println(user);
-
         Parent root;
 
         //if second part of session id is not null, then we need to load the main menu page
         //session id is separated by a colon
         if (sessionId != null && sessionId.contains(":")) {
+
+            String uname = SessionHandler.decryptSessionId(sessionId)[0];
+
+            System.out.println("Session username: "+uname);
+
+            //create Users object from uname
+            Users user = usersDao.findByPropertyLike("username", uname);
+
+            System.out.println("User:"+user);
+
             String[] parts = sessionId.split(":");
             if (parts.length == 2 ) {
-                // yyyy is not null or empty
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_home_page.fxml"));
-                root = loader.load();
-                PpHomePageController homeController = loader.getController();
+                if(user!=null && uname.equals(user.getUsername()) ){
+                    // yyyy is not null or empty
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_home_page.fxml"));
+                    root = loader.load();
+                    PpHomePageController homeController = loader.getController();
+                } else {
+                    // yyyy is null or empty
+                    SessionHandler.removeSessionId();
+
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_log_in.fxml"));
+                    root = loader.load();
+                    PpLogInController logInController = loader.getController();
+                }
             } else {
                 // yyyy is null or empty
                 SessionHandler.removeSessionId();

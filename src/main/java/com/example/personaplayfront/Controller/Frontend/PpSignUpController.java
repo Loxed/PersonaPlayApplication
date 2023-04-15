@@ -1,5 +1,9 @@
 package com.example.personaplayfront.Controller.Frontend;
 
+import com.example.personaplayfront.Model.Roles;
+import com.example.personaplayfront.Model.Users;
+import com.example.personaplayfront.Repo.RolesDaoImpl;
+import com.example.personaplayfront.Repo.UsersDaoImpl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,8 +41,15 @@ public class PpSignUpController {
 
     private String confirmationCode;
 
+    UsersDaoImpl usersDao;
+
+    Users usermail;
+    Users user;
+
     //init
     public void initialize() {
+        usersDao = new UsersDaoImpl();
+
         signUpView.setVisible(true);
         confirmSignUpView.setVisible(false);
     }
@@ -50,39 +61,57 @@ public class PpSignUpController {
         String regex = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,4}$";
 
         if(emailTextField.getText().matches(regex)) {
-
-            //TODO: check if email is taken in db
-            if (emailTextField.getText().equals("knack303l@gmail.com")) {
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error");
-                alert.setHeaderText("Email already taken");
-                alert.setContentText("Veuillez entrer un autre email");
-                alert.showAndWait();
-            } else {
-                //todo: check if username is taken in db
-                if (usernameTextField.getText().equals("test")) {
+            try {
+                usermail = usersDao.findByPropertyLike("email", emailTextField.getText());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
+                user = usersDao.findByPropertyLike("username", usernameTextField.getText());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            if(usermail!=null)
+                if(usermail.getEmail().equals(emailTextField.getText())){
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Error");
-                    alert.setHeaderText("Username already taken");
-                    alert.setContentText("Veuillez entrer un autre username");
+                    alert.setHeaderText("Email already taken");
                     alert.showAndWait();
                 } else {
-
                     //send confirmation code to email
                     sendConfirmationCode();
                     //switch to confirm sign up view
                     signUpView.setVisible(false);
                     confirmSignUpView.setVisible(true);
                 }
+            else if(user!=null)
+                if(user.getUsername().equals(usernameTextField.getText())){
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error");
+                    alert.setHeaderText("Username already taken");
+                    alert.showAndWait();
+                } else {
+                    //send confirmation code to email
+                    sendConfirmationCode();
+                    //switch to confirm sign up view
+                    signUpView.setVisible(false);
+                    confirmSignUpView.setVisible(true);
+                }
+            else {
+                //send confirmation code to email
+                sendConfirmationCode();
+                //switch to confirm sign up view
+                signUpView.setVisible(false);
+                confirmSignUpView.setVisible(true);
             }
-        } else {
+        }
+        else {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
             alert.setHeaderText("Email incorrect");
             alert.setContentText("Veuillez entrer une adresse email valide");
             alert.showAndWait();
         }
-
     }
 
     @FXML
@@ -103,6 +132,11 @@ public class PpSignUpController {
 
         if(confirmationCodeTextField.getText().equals(confirmationCode)) {
             //TODO: add user to db
+            RolesDaoImpl rolesDao = new RolesDaoImpl();
+
+            Users user = new Users(usernameTextField.getText(), passwordTextField.getText(), emailTextField.getText(), false, rolesDao.findById(1));
+
+            usersDao.save(user);
 
             //switch to log in view
             try {

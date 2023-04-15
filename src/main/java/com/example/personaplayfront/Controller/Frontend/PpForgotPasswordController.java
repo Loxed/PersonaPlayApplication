@@ -1,5 +1,7 @@
 package com.example.personaplayfront.Controller.Frontend;
 
+import com.example.personaplayfront.Model.Users;
+import com.example.personaplayfront.Repo.UsersDaoImpl;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -37,9 +39,14 @@ public class PpForgotPasswordController {
 
     private String code;
 
+
+    UsersDaoImpl usersDao;
+
+    Users usermail;
     //init
     @FXML
     public void initialize() {
+        usersDao = new UsersDaoImpl();
         //hide enter code and reset password views
         enterCodeVBox.setVisible(false);
         resetPasswordVBox.setVisible(false);
@@ -62,8 +69,9 @@ public class PpForgotPasswordController {
     @FXML
     public void switchToForgotPasswordView(ActionEvent actionEvent) throws IOException {
 
-        //TODO: Check if email exists in database
-        if(emailTextField.getText().equals("leopold@rombaut.org")) {
+        usermail = usersDao.findByPropertyLike("email", emailTextField.getText());
+
+        if(usermail!= null) {
             //then switch to reset password view
             resetPasswordMail();
 
@@ -129,7 +137,7 @@ public class PpForgotPasswordController {
             }
 
             //TODO : repplace placeholder with value from database (search by email)
-            html = html.replace("{{user}}", "Lox");
+            html = html.replace("{{user}}", usermail.getUsername());
 
             //generate a random verification code that's 6 digits long (each digit is either a capitalized letter or a number)
             Random random = new Random();
@@ -185,6 +193,8 @@ public class PpForgotPasswordController {
         alert.showAndWait();
 
         //TODO: update the password in the database
+        usermail.setPassword(passwordTextField.getText());
+        usersDao.update(usermail);
 
         //switch to log in view
         try {
