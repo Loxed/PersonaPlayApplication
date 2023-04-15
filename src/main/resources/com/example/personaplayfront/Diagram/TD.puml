@@ -3,30 +3,31 @@
 !define foreign_key(x) <color:#aaaaaa><&key></color> x
 !define column(x) <color:#efefef><&media-record></color> x
 !define table(x) entity x << (T, white) >>
-
+!define combined_table(x) entity x << (T, #ffffe0) >>
+!define list_table(x) entity x << (T, #e0ffff) >>
+!define primary_id(x) <color:#ff7070><&key></color> x
+'many to many primary key composed of two keys
+!define many_to_many(x, y) <color:#0000e0><&key></color> x,y
 
 table(Users) {
-
-    primary_key(id) : VARCHAR 32
+    primary_id(id) : VARCHAR 32
     column(username) : VARCHAR 20
     column(email) : VARCHAR 50
+    column(password) : VARCHAR 64
     column(content_filter) : BOOLEAN
-    foreign_key(role_id) : REFERENCES Role(id)
-    foreign_key(icons_id) : REFERENCES Icons(id)
+    foreign_key(roles_id) : REFERENCES Roles(id)
 }
 
-
-
-table(UsersStatus) {
-    primary_key(id) : INTEGER
-    primary_key(users_id) : INTEGER
-    primary_key(media_id) : VARCHAR 9
+combined_table(UsersMedias) {
+    many_to_many(users_id,medias_id)
+    foreign_key(users_id) : REFERENCES Users(id)
+    foreign_key(medias_id) : REFERENCES Medias(id)
     column(users_rating) : INTEGER
-    column(manual_completion_status) : INTEGER
+    column(completion) : VARCHAR 20
 }
 
 table(Medias) {
-    primary_key(id) : INTEGER
+    primary_id(id) : INTEGER
     column(imdb_id) : VARCHAR 9
     column(title) : VARCHAR 100
     column(year) : VARCHAR 4
@@ -39,67 +40,78 @@ table(Medias) {
     column(media_location) : VARCHAR 255
 }
 
-table(Rating){
-    primary_key(id) : INTEGER
+table(Ratings){
+    primary_id(id) : INTEGER
     column(rating) : INTEGER
     column(rating_count) : INTEGER
+    foreign_key(medias_id) : REFERENCES Medias(id)
 }
 
-Medias ||-u-o{ Rating
+Medias ||-r-o{ Ratings
+UsersMedias }|--|| Medias
+UsersMedias }|-l-|| Users
 
-UsersStatus }|--|| Medias
-UsersStatus }|-l-|| Users
-
-table(Status) {
-    primary_key(id) : INTEGER
+table(Stats) {
+    primary_id(id) : INTEGER
     column(completion_time): INTEGER
-    column(progress) : INTEGER
-    column(max_progress) : INTEGER
 }
 
-table(MediaStatus) {
-    primary_key(id) : INTEGER
-    primary_key(media_id) : INTEGER
-    primary_key(status_id) : INTEGER
+combined_table(MediasStats) {
+    many_to_many(media_id,stats_id)
+    foreign_key(media_id) : REFERENCES Medias(id)
+    foreign_key(stats_id) : REFERENCES Stats(id)
 }
 
-MediaStatus }|-r-|| Medias
-MediaStatus }|-l-|| Status
+MediasStats }|-r-|| Medias
+MediasStats }|-l-|| Stats
 
 table(Icons) {
-    primary_key(id) : INTEGER
+    primary_id(id) : INTEGER
     column(icon) : INTEGER
     column(variant) : INTEGER
+    foreign_key(users_id) : REFERENCES Users(id)
 }
 
 Users ||-u-|| Icons
 
-
-table(Role) {
-    primary_key(id) : INTEGER
+list_table(Roles) {
+    primary_id(id) : INTEGER
     column(name) : VARCHAR 20
 }
 
-Users }o-u-|| Role
+Users }o-u-|| Roles
 
-table(Watchlist) {
-    primary_key(id) : INTEGER
+list_table(Watchlist) {
+    primary_id(id) : INTEGER
     column(type) : VARCHAR 20
-    foreign_key(Users_id) : REFERENCES Users(id)
-    foreign_key(media_status_id) : REFERENCES MediasStatus(id)
-    foreign_key(tag_id) : REFERENCES Tag(id)
+    foreign_key(users_id) : REFERENCES Users(id)
 }
 
-table(Tag){
-    primary_key(id) : INTEGER
+list_table(WatchlistMediasStats) {
+    many_to_many(watchlist_id,medias_stats_id)
+    foreign_key(watchlist_id) : REFERENCES Watchlist(id)
+    foreign_key(medias_stats_id) : REFERENCES MediasStats(id)
+}
+
+list_table(Tags){
+    primary_id(id) : INTEGER
+    primary_key(watchlist_id) : INTEGER
     column(name) : VARCHAR 20
+}
+
+list_table(WatchlistTags) {
+    many_to_many(watchlist_id,tags_id)
+    foreign_key(watchlist_id) : REFERENCES Watchlist(id)
+    foreign_key(tags_id) : REFERENCES Tags(id)
 }
 
 Users ||-d-|| Watchlist
 
-Watchlist }o--o{ MediasStatus
+Watchlist ||-u-o{ WatchlistTags
+WatchlistTags }|--|| Tags
 
-Watchlist }o-u-o{ Tag
 
+Watchlist ||-d-o{ WatchlistMediasStats
+WatchlistMediasStats }|--|| MediasStats
 
 @enduml

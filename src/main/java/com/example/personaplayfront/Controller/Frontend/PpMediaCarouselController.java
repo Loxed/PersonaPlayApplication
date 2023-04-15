@@ -81,7 +81,7 @@ public class PpMediaCarouselController {
 
         List<Image> images = new ArrayList<Image>();
 
-        categoryName.setText("Adventure");
+        categoryName.setText("Drama");
 
         //do this in a thread
         //get carousel page
