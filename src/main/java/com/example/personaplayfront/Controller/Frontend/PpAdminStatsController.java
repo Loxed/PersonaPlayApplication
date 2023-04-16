@@ -1,9 +1,12 @@
 package com.example.personaplayfront.Controller.Frontend;
 
+import com.example.personaplayfront.Controller.Handler.SessionHandler;
 import com.example.personaplayfront.Model.Medias;
 import com.example.personaplayfront.Model.Users;
+import com.example.personaplayfront.Model.UsersMedias;
 import com.example.personaplayfront.Repo.MediaDaoImpl;
 import com.example.personaplayfront.Repo.UsersDaoImpl;
+import com.example.personaplayfront.Repo.UsersMediasDaoImpl;
 import javafx.collections.FXCollections;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -22,6 +25,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class PpAdminStatsController {
     public PieChart genrePieChart;
@@ -30,6 +34,8 @@ public class PpAdminStatsController {
     MediaDaoImpl mediaDao = new MediaDaoImpl();
 
     UsersDaoImpl userDao = new UsersDaoImpl();
+
+    UsersMediasDaoImpl userMediaDao = new UsersMediasDaoImpl();
 
     Map<String, Integer> genreCounts = new HashMap<>();
 
@@ -64,8 +70,6 @@ public class PpAdminStatsController {
                 max = entry.getYValue().intValue();
             }
         }
-
-        System.out.println(max);
 
         //if highest count for every 6hr increment is less than 10, set upper bound to 10
         if(max > 10) {
@@ -168,8 +172,6 @@ public class PpAdminStatsController {
             String dateTimeString = dateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
             int count = DtMapCount.get(dateTime);
 
-            System.out.println(dateTimeString + " " + count);
-
             series.getData().add(new XYChart.Data<>(dateTimeString, count));
 
         }
@@ -186,30 +188,107 @@ public class PpAdminStatsController {
     private void initMediaTable() throws IOException {
         List<Medias> medias = mediaDao.findAll();
 
-        if(medias.size()>30) {
-            medias = medias.subList(0, 30);
+
+        Users user = userDao.findByPropertyLike("username", SessionHandler.decryptSessionId(SessionHandler.getSessionId()));
+
+        List<UsersMedias> userMediaList = userMediaDao.findAll();
+        
+        Map<Integer,Integer> mediaRatingMap = new HashMap<>(); //will have the media id as key, and total rating as value
+        Map<Integer,Integer> mediaCountMap = new HashMap<>(); //will have the media id as key, and total count as value
+
+        //get total rating for each media
+        for(Medias media : medias) {
+            for(UsersMedias userMedia : userMediaList) {
+
+                //if media.id is in userMediaList, get the rating and add it to the map
+
+                if(media.id == userMedia.getMedia().id) {
+                    if(mediaRatingMap.containsKey(media.id)) {
+                        mediaRatingMap.put(media.id, mediaRatingMap.get(media.id) + userMedia.getRating());
+                        mediaCountMap.put(media.id, mediaCountMap.get(media.id) + 1);
+                    } else {
+                        mediaRatingMap.put(media.id, userMedia.getRating());
+                        mediaCountMap.put(media.id, 1);
+                    }
+                }
+            }
         }
+
+        //write the different maps we have now:
+
+
+        //get average rating for each media
+        Map<Integer,Double> mediaAvgRatingMap = new HashMap<>();
+
+        for(Integer mediaId : mediaRatingMap.keySet()) {
+            double avgRating = (double) mediaRatingMap.get(mediaId) / mediaCountMap.get(mediaId);
+            mediaAvgRatingMap.put(mediaId, avgRating);
+        }
+
+        //write the different maps we have now:
+        System.out.println("mediaRatingMap: " + mediaRatingMap);
+        System.out.println("mediaCountMap: " + mediaCountMap);
+        System.out.println("mediaAvgRatingMap: " + mediaAvgRatingMap);
+
+        //sort every map by average rating and total count
+        Map<Integer, Double> sortedAvgRatingMap = mediaAvgRatingMap.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+
+        Map<Integer, Integer> sortedRatingMap = mediaRatingMap.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+
+        Map<Integer, Integer> sortedCountMap = mediaCountMap.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue, (e1, e2) -> e1, LinkedHashMap::new));
+
+        //write the different maps we have now:
+        System.out.println("sortedAvgRatingMap: " + sortedAvgRatingMap);
+        System.out.println("sortedRatingMap: " + sortedRatingMap);
+        System.out.println("sortedCountMap: " + sortedCountMap);
 
         scrollcontent.getChildren().clear();
 
         int i =0;
 
-        for (Medias media : medias) {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_admin_stats_media_obj.fxml"));
-            Parent root = loader.load();
-            scrollcontent.getChildren().add(root);
-            PpAdminStatsMediaObjController controller = loader.getController();
+        //iterate through the 30 highest rated media, only using sorted maps
+        for(Integer mediaId : sortedAvgRatingMap.keySet()) {
+            if(i==30)
+                break;
 
-            controller.title.setText(media.mediaName);
-            controller.year.setText(media.year);
-            controller.genre.setText(media.genres);
+            for(Medias media : medias) {
+                if(media.id == mediaId && mediaAvgRatingMap.get(mediaId) != 0) {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_admin_stats_media_obj.fxml"));
+                    Parent root = loader.load();
+                    //add to back of the list
+                    scrollcontent.getChildren().add(i,root);
+                    PpAdminStatsMediaObjController controller = loader.getController();
 
-            if(i%2==0) {
-                scrollcontent.getChildren().get(i).setStyle("-fx-background-color: #d5c4a1");
-            } i++;
+                    controller.title.setText(media.mediaName);
+                    controller.year.setText(media.year);
+                    controller.genre.setText(media.genres);
+
+                    if(mediaAvgRatingMap.containsKey(media.id)) {
+                        controller.rating.setText(String.valueOf(mediaAvgRatingMap.get(media.id)));
+                    } else {
+                        controller.rating.setText("0");
+                    }
+
+                    if(mediaCountMap.containsKey(media.id)) {
+                        controller.nbRating.setText(String.valueOf(mediaCountMap.get(media.id)));
+                    } else {
+                        controller.nbRating.setText("0");
+                    }
+
+                    if (i%2 == 0) {
+                        scrollcontent.getChildren().get(i).setStyle("-fx-background-color: #d5c4a1;");
+                    }
+                    i++;
+                }
+            }
         }
     }
-
     public void initPieChart() {
         ArrayList<String> movieGenres = new ArrayList<String>();
 

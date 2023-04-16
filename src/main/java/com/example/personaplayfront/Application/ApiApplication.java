@@ -24,21 +24,27 @@ public class ApiApplication {
         MediaDaoImpl mediaDao = new MediaDaoImpl();
         UsersMediasDaoImpl userMediaDao = new UsersMediasDaoImpl();
 
-        Users user = usersDao.findAll().get(1);
+//        Users user = usersDao.findAll().get(1);
+//
+//        System.out.println("user: "+user);
+//
+//        Medias media = mediaDao.findAll().get(1);
+//
+//        System.out.println("media: "+media);
+//
+//        UsersMedias userMedia = new UsersMedias(user, media, 5, "Watching", false);
+//
+//        userMedia.setId(new UsersMediasKey(user.getId(), media.id));
+//
+//        System.out.println(userMedia);
+//
+//        userMediaDao.save(userMedia);
 
-        System.out.println("user: "+user);
+        List<UsersMedias> userMediaList = userMediaDao.findAll();
 
-        Medias media = mediaDao.findAll().get(1);
-
-        System.out.println("media: "+media);
-
-        UsersMedias userMedia = new UsersMedias(user, media, 5, "Watching", false);
-
-        userMedia.setId(new UsersMediasKey(user.getId(), media.id));
-
-        System.out.println(userMedia);
-
-        userMediaDao.save(userMedia);
+        for(UsersMedias userMedia : userMediaList) {
+            System.out.println(userMedia);
+        }
 
     }
 }
