@@ -248,7 +248,6 @@ public class PpHomePageController {
                         text.setFont(Font.font("Eras Light ITC", 20));
                     }
                 }));
-
     }
     @FXML
     private void handleProfileView() throws IOException{

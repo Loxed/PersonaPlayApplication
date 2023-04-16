@@ -89,10 +89,8 @@ public class MediaDaoImpl extends Dao<Medias> {
     @Override
     public List<Medias> findAllByPropertyLike(String propertyName, Object value) {
         try (Session session = HibernateFactory.sessionFactory.openSession()) {
-            //depending on the property, we may want to order by different things
-//            String hql = "select m from Medias m where m." + propertyName + " like CONCAT('%', :value, '%') ORDER BY m.imdb_id ASC";
-            String hql = "select m from Medias m where m."+ propertyName +" like CONCAT('%', :value, '%') ORDER BY m.imdbId ASC";
 
+            String hql = "select m from Medias m where m."+ propertyName +" like CONCAT('%', :value, '%') ORDER BY m.imdbId ASC";
 
             return session.createQuery(hql, Medias.class)
                     .setParameter("value", value)

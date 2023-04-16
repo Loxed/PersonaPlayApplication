@@ -2,6 +2,10 @@ package com.example.personaplayfront.Controller.Frontend;
 
 import com.example.personaplayfront.Controller.Handler.ImageHandler;
 import com.example.personaplayfront.Controller.Handler.SessionHandler;
+import com.example.personaplayfront.Model.Roles;
+import com.example.personaplayfront.Model.Users;
+import com.example.personaplayfront.Repo.RolesDaoImpl;
+import com.example.personaplayfront.Repo.UsersDaoImpl;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -40,43 +44,39 @@ public class PpSettingsController {
     @FXML
     public HBox subsBox;
     @FXML
-    public HBox passwordBox;
+    public HBox adminBox;
     @FXML
     public HBox profileBox;
     @FXML
     public HBox overviewBox;
 
-
     @FXML
     Circle PersonaPlayLogo;
 
+    UsersDaoImpl userDao = new UsersDaoImpl();
     @FXML
     public void initialize() throws FileNotFoundException {
         Parent root;
-        //display media description
-//        try {
-//            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_settings_container.fxml"));
-//            root = loader.load();
-//            PpMediaDescriptionController movieDescriptionController = loader.getController();
-//            settings_page.getChildren().add(root);
-//            //todo: set movie details based on the movie that was clicked on, and db
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
+
+        String username = SessionHandler.decryptSessionId(SessionHandler.getSessionId())[0];
+
+        Users user = userDao.findByPropertyLike("username", username);
+
+        if(user.getRole().getName().equals("admin")) {
+            adminBox.setVisible(true);
+            overviewBox.setVisible(true);
+        } else {
+            adminBox.setVisible(false);
+            overviewBox.setVisible(false);
+        }
 
         //InputStreamReader reader = new InputStreamReader(getClass().getResourceAsStream("src/main/resources/com/example/personaplayfront/Icon/PersonaPlayLogo.png"));
 
         FileInputStream reader = new FileInputStream("src/main/resources/com/example/personaplayfront/Icon/PersonaPlayLogo.png");
         //set logo
         PersonaPlayLogo.setFill(new ImagePattern(new Image(reader)));
-//
-//        reader = new FileInputStream("src/main/resources/com/example/personaplayfront/Font/p5hatty.ttf");
-//
-//        Font font = Font.loadFont(reader, 18);
 
-        //personaPlayText.setFont(font);
-
-        Arrays.asList(homeBox, privacyPolicyBox, subsBox, passwordBox, profileBox, overviewBox)
+        Arrays.asList(homeBox, privacyPolicyBox, subsBox, adminBox, profileBox, overviewBox)
                 .forEach(node -> node.setOnMouseEntered(event3 -> {
                     if (node.getChildren().size() > 1 && node.getChildren().get(1) instanceof Text text) {
                         //Eras Bold ITC
@@ -105,6 +105,7 @@ public class PpSettingsController {
                                     try {
                                         Parent root2 = FXMLLoader.load(getClass().getResource("/com/example/personaplayfront/Vue/pp_privacy_policy.fxml"));
                                         //set inside settings container as child
+                                        settingsContainer.getChildren().clear();
                                         settingsContainer.getChildren().add(root2);
 
                                     } catch (IOException e) {
@@ -119,29 +120,32 @@ public class PpSettingsController {
 //                                        e.printStackTrace();
 //                                    }
                                 }
-                                case "Password" -> {
-//                                    try {
-//                                        Parent root1 = FXMLLoader.load(getClass().getResource("/com/example/personaplayfront/Vue/pp_password.fxml"));
-//                                        SessionHandler.getMainStage().getScene().setRoot(root1);
-//                                    } catch (IOException e) {
-//                                        e.printStackTrace();
-//                                    }
+                                case "Admin" -> {
+                                    try {
+                                        Parent root1 = FXMLLoader.load(getClass().getResource("/com/example/personaplayfront/Vue/pp_admin_settings.fxml"));
+                                        settingsContainer.getChildren().clear();
+                                        settingsContainer.getChildren().add(root1);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                                 case "Profile" -> {
-//                                    try {
-//                                        Parent root1 = FXMLLoader.load(getClass().getResource("/com/example/personaplayfront/Vue/pp_profile.fxml"));
-//                                        SessionHandler.getMainStage().getScene().setRoot(root1);
-//                                    } catch (IOException e) {
-//                                        e.printStackTrace();
-//                                    }
+                                    try {
+                                        Parent root1 = FXMLLoader.load(getClass().getResource("/com/example/personaplayfront/Vue/pp_user_settings.fxml"));
+                                        settingsContainer.getChildren().clear();
+                                        settingsContainer.getChildren().add(root1);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                                 case "Overview" -> {
-//                                    try {
-//                                        Parent root1 = FXMLLoader.load(getClass().getResource("/com/example/personaplayfront/Vue/pp_overview.fxml"));
-//                                        SessionHandler.getMainStage().getScene().setRoot(root1);
-//                                    } catch (IOException e) {
-//                                        e.printStackTrace();
-//                                    }
+                                    try {
+                                        Parent root1 = FXMLLoader.load(getClass().getResource("/com/example/personaplayfront/Vue/pp_admin_overview.fxml"));
+                                        settingsContainer.getChildren().clear();
+                                        settingsContainer.getChildren().add(root1);
+                                    } catch (IOException e) {
+                                        e.printStackTrace();
+                                    }
                                 }
                             }
                         });
@@ -149,7 +153,7 @@ public class PpSettingsController {
                 }));
 
 
-        Arrays.asList(homeBox, privacyPolicyBox, subsBox, passwordBox, profileBox, overviewBox)
+        Arrays.asList(homeBox, privacyPolicyBox, subsBox, adminBox, profileBox, overviewBox)
                 .forEach(node -> node.setOnMouseExited(event4 -> {
                     if (node.getChildren().size() > 1 && node.getChildren().get(1) instanceof Text text) {
                         //Eras Bold ITC
