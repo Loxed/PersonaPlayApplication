@@ -1,12 +1,14 @@
 package com.example.personaplayfront.Model;
 
 import jakarta.persistence.*;
+import java.time.LocalDateTime;
 
 import java.util.Set;
 
 @Entity
 @Table(name = "users")
 public class Users {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -31,9 +33,23 @@ public class Users {
     @OneToMany(mappedBy = "users")
     Set<UsersMedias> usersMedias;
 
+    @Column(name = "creation_date") //is a timestamp "2022-04-16 15:30:00"
+    private String creationDate;
+
+
 
     public Users() {
 
+        //convert 2023-04-16T15:56:57.380277200 to 2023-04-16 15:56:57
+        LocalDateTime now = LocalDateTime.now();
+        String[] date = now.toString().split("T");
+        this.creationDate = date[0] + " " + date[1].substring(0, 8);
+
+        this.contentFilter = false;
+        this.username = "default";
+        this.password = "default";
+        this.email = "default";
+        this.role = new Roles();
     }
 
 
@@ -43,6 +59,12 @@ public class Users {
         this.email = email;
         this.contentFilter = contentFilter;
         this.role = role;
+
+        //convert 2023-04-16T15:56:57.380277200 to 2023-04-16 15:56:57
+        LocalDateTime now = LocalDateTime.now();
+        String[] date = now.toString().split("T");
+        this.creationDate = date[0] + " " + date[1].substring(0, 8);
+
     }
 
     public int getId() {
@@ -93,6 +115,15 @@ public class Users {
         this.role = role;
     }
 
+    public String getCreationDate() {
+        return creationDate;
+    }
+
+    public void updateCreationDate() {
+        LocalDateTime now = LocalDateTime.now();
+        String[] date = now.toString().split("T");
+        this.creationDate = date[0] + " " + date[1].substring(0, 8);
+    }
     public Set<UsersMedias> getUsersMedias() {
         return usersMedias;
     }
@@ -110,6 +141,7 @@ public class Users {
                 ", email=" + email +
                 ", contentFilter=" + contentFilter +
                 ", role=" + role +
+                ", creationDate=" + creationDate +
                 '}';
     }
 

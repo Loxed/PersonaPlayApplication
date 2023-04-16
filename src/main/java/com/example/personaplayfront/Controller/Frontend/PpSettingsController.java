@@ -76,6 +76,24 @@ public class PpSettingsController {
         //set logo
         PersonaPlayLogo.setFill(new ImagePattern(new Image(reader)));
 
+        if(user.getRole().getName().equals("admin")) {
+            try {
+                root = FXMLLoader.load(getClass().getResource("/com/example/personaplayfront/Vue/pp_admin_stats.fxml"));
+                settingsContainer.getChildren().clear();
+                settingsContainer.getChildren().add(root);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                root = FXMLLoader.load(getClass().getResource("/com/example/personaplayfront/Vue/pp_user_settings.fxml"));
+                settingsContainer.getChildren().clear();
+                settingsContainer.getChildren().add(root);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         Arrays.asList(homeBox, privacyPolicyBox, subsBox, adminBox, profileBox, overviewBox)
                 .forEach(node -> node.setOnMouseEntered(event3 -> {
                     if (node.getChildren().size() > 1 && node.getChildren().get(1) instanceof Text text) {
@@ -140,7 +158,7 @@ public class PpSettingsController {
                                 }
                                 case "Overview" -> {
                                     try {
-                                        Parent root1 = FXMLLoader.load(getClass().getResource("/com/example/personaplayfront/Vue/pp_admin_overview.fxml"));
+                                        Parent root1 = FXMLLoader.load(getClass().getResource("/com/example/personaplayfront/Vue/pp_admin_stats.fxml"));
                                         settingsContainer.getChildren().clear();
                                         settingsContainer.getChildren().add(root1);
                                     } catch (IOException e) {

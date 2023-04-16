@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: #d5c4a1;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.personaplayfront.Controller.Frontend.PpAdminStatsController">
+   <children>
+      <VBox layoutY="1.0" prefHeight="720.0" prefWidth="1080.0">
+         <children>
+            <HBox alignment="CENTER" prefHeight="40.0" prefWidth="1060.0">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="40.0" prefWidth="212.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Movie" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="40.0" prefWidth="212.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Genre" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="40.0" prefWidth="212.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Year" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="40.0" prefWidth="212.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Rating" />
+                     </children>
+                  </VBox>
+                  <VBox alignment="CENTER" prefHeight="40.0" prefWidth="212.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="# of ratings" />
+                     </children>
+                  </VBox>
+               </children>
+               <VBox.margin>
+                  <Insets bottom="10.0" top="10.0" />
+               </VBox.margin>
+            </HBox>
+            <ScrollPane fx:id="scrollpage" hbarPolicy="NEVER" prefHeight="200.0" prefWidth="1060.0" vbarPolicy="NEVER">
+               <content>
+                  <VBox fx:id="scrollcontent" prefHeight="200.0" prefWidth="1080.0" style="-fx-background-color: #bdae93;">
+                     <children>
+
+                     </children></VBox>
+               </content>
+               <VBox.margin>
+                  <Insets bottom="10.0" />
+               </VBox.margin>
+            </ScrollPane>
+            <HBox prefHeight="520.0" prefWidth="200.0" style="-fx-background-color: #d5c4a1;">
+               <children>
+                  <PieChart fx:id="genrePieChart" prefHeight="360.0" prefWidth="540.0" title="Movies by genre" />
+                  <LineChart fx:id="creationLineChart" prefHeight="520.0" prefWidth="540.0" style="-fx-background-color: #d5c4a1; -fx-background-radius: 10;" title="New accounts">
+                    <xAxis>
+                      <CategoryAxis label="Date" side="BOTTOM" tickLabelRotation="-90.0" fx:id="xAxis">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                           <tickLabelFont>
+                              <Font name="Eras Demi ITC" size="12.0" />
+                           </tickLabelFont>
+                        </CategoryAxis>
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis fx:id="yAxis" side="LEFT">
+                           <padding>
+                              <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                           </padding>
+                        </NumberAxis>
+                    </yAxis>
+                     <HBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </HBox.margin>
+                  </LineChart>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+            </HBox>
+         </children>
+      </VBox>
+      <Pane fx:id="pane" layoutX="880.0" layoutY="670.0" prefHeight="50.0" prefWidth="200.0" />
+   </children>
+</AnchorPane>
