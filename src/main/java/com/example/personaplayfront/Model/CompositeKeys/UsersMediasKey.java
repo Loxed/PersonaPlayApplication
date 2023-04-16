@@ -1,40 +1,37 @@
 package com.example.personaplayfront.Model.CompositeKeys;
 
-import com.example.personaplayfront.Model.Medias;
-import com.example.personaplayfront.Model.Users;
-
 import jakarta.persistence.*;
 
+@Embeddable
 public class UsersMediasKey implements java.io.Serializable{
-
     @Column(name = "users_id")
-    private int usersId;
+    private int users_id;
 
     @Column(name = "medias_id")
-    private int mediasId;
+    private int medias_id;
 
     public UsersMediasKey() {
     }
 
     public UsersMediasKey(int usersId, int mediasId) {
-        this.usersId = usersId;
-        this.mediasId = mediasId;
+        this.users_id = usersId;
+        this.medias_id = mediasId;
     }
 
-    public int getUsersId() {
-        return usersId;
+    public int getUsers_id() {
+        return users_id;
     }
 
-    public void setUsersId(int usersId) {
-        this.usersId = usersId;
+    public void setUsers_id(int usersId) {
+        this.users_id = usersId;
     }
 
-    public int getMediasId() {
-        return mediasId;
+    public int getMedias_id() {
+        return medias_id;
     }
 
-    public void setMediasId(int mediasId) {
-        this.mediasId = mediasId;
+    public void setMedias_id(int mediasId) {
+        this.medias_id = mediasId;
     }
 
     @Override
@@ -44,22 +41,22 @@ public class UsersMediasKey implements java.io.Serializable{
 
         UsersMediasKey that = (UsersMediasKey) o;
 
-        if (usersId != that.usersId) return false;
-        return mediasId == that.mediasId;
+        if (users_id != that.users_id) return false;
+        return medias_id == that.medias_id;
     }
 
     @Override
     public int hashCode() {
-        int result = usersId;
-        result = 31 * result + mediasId;
+        int result = users_id;
+        result = 31 * result + medias_id;
         return result;
     }
 
     @Override
     public String toString() {
         return "UsersMediasKey{" +
-                "usersId=" + usersId +
-                ", mediasId=" + mediasId +
+                "usersId=" + users_id +
+                ", mediasId=" + medias_id +
                 '}';
     }
 }

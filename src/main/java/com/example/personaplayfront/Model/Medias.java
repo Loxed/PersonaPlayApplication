@@ -11,7 +11,7 @@ import java.util.Set;
 @Entity
 @Table(name = "medias")
 @JsonIgnoreProperties(ignoreUnknown = true)
-public class Medias {
+public class Medias implements java.io.Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -108,6 +108,7 @@ public class Medias {
     @Override
     public String toString() {
         return "Medias{" +
+                "id=" + id +
                 "imdbId='" + imdbId + '\'' +
                 ", mediaName='" + mediaName + '\'' +
                 ", posterUrl='" + posterUrl + '\'' +
@@ -135,5 +136,44 @@ public class Medias {
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(this);
         return json;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Medias medias = (Medias) o;
+
+        if (id != medias.id) return false;
+        if (available != medias.available) return false;
+        if (visible != medias.visible) return false;
+        if (imdbId != null ? !imdbId.equals(medias.imdbId) : medias.imdbId != null) return false;
+        if (mediaName != null ? !mediaName.equals(medias.mediaName) : medias.mediaName != null) return false;
+        if (posterUrl != null ? !posterUrl.equals(medias.posterUrl) : medias.posterUrl != null) return false;
+        if (genres != null ? !genres.equals(medias.genres) : medias.genres != null) return false;
+        if (year != null ? !year.equals(medias.year) : medias.year != null) return false;
+        if (actors != null ? !actors.equals(medias.actors) : medias.actors != null) return false;
+        if (director != null ? !director.equals(medias.director) : medias.director != null) return false;
+        if (plot != null ? !plot.equals(medias.plot) : medias.plot != null) return false;
+        return mediaLocation != null ? mediaLocation.equals(medias.mediaLocation) : medias.mediaLocation == null;
+    }
+
+
+    @Override
+    public int hashCode() {
+        int result = id;
+        result = 31 * result + (imdbId != null ? imdbId.hashCode() : 0);
+        result = 31 * result + (mediaName != null ? mediaName.hashCode() : 0);
+        result = 31 * result + (posterUrl != null ? posterUrl.hashCode() : 0);
+        result = 31 * result + (genres != null ? genres.hashCode() : 0);
+        result = 31 * result + (year != null ? year.hashCode() : 0);
+        result = 31 * result + (actors != null ? actors.hashCode() : 0);
+        result = 31 * result + (director != null ? director.hashCode() : 0);
+        result = 31 * result + (plot != null ? plot.hashCode() : 0);
+        result = 31 * result + (available ? 1 : 0);
+        result = 31 * result + (visible ? 1 : 0);
+        result = 31 * result + (mediaLocation != null ? mediaLocation.hashCode() : 0);
+        return result;
     }
 }

@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
@@ -39,6 +40,7 @@ public class PpMediaDescriptionController {
 
     @FXML
     public Pane color_gradient;
+    public Button rate_media;
 
     @FXML
     private ImageView poster;
@@ -50,10 +52,21 @@ public class PpMediaDescriptionController {
     private Pane my_gradient;
 
     String media_link;
+
+    Medias media;
     //init
     @FXML
     public void initialize() {
         updateInfo(new Medias());
+
+        rate_media.setDisable(true);
+
+        rate_media.setStyle("-fx-background-color: #2b2b2b; -fx-background-radius: 5px; -fx-border-color: #363636; -fx-border-radius: 1px; -fx-text-fill: #ffffff; -fx-padding: 5px 10px;");
+        //on hover, set contour to cyan with 2px
+        rate_media.setOnMouseEntered(event -> rate_media.setStyle("-fx-background-color: #2b2b2b; -fx-background-radius: 5px; -fx-border-color: #00ffff; -fx-border-radius: 2px; -fx-text-fill: #ffffff; -fx-padding: 5px 10px;"));
+        //on exit, set contour to transparent
+        rate_media.setOnMouseExited(event -> rate_media.setStyle("-fx-background-color: #2b2b2b; -fx-background-radius: 5px; -fx-border-color: #363636; -fx-border-radius: 2px; -fx-text-fill: #ffffff; -fx-padding: 5px 10px;"));
+
     }
 
     @FXML
@@ -108,6 +121,10 @@ public class PpMediaDescriptionController {
     }
 
     public void updateInfo(Medias medias) {
+
+        media = medias;
+
+        rate_media.setDisable(false);
 
         Image image = new Image(medias.posterUrl);
 
@@ -181,6 +198,23 @@ public class PpMediaDescriptionController {
 
         }else{
             play_media.setDisable(true);
+        }
+
+    }
+    public void openRating(ActionEvent actionEvent) {
+        FXMLLoader loader1 = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_rating_page.fxml"));
+        Parent root = null;
+        try {
+            root = loader1.load();
+
+            PpRatingPageController controller = loader1.getController();
+            controller.setMedia(media);
+            Scene scene = new Scene(root);
+            Stage stage = new Stage();
+            stage.setScene(scene);
+            stage.show();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
 
     }

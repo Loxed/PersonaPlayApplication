@@ -11,10 +11,8 @@ import java.util.List;
 //personal
 import com.example.personaplayfront.Controller.Handler.ApiHandler;
 
-import com.example.personaplayfront.Model.Icon;
-import com.example.personaplayfront.Model.Medias;
-import com.example.personaplayfront.Model.Roles;
-import com.example.personaplayfront.Model.Users;
+import com.example.personaplayfront.Model.*;
+import com.example.personaplayfront.Model.CompositeKeys.UsersMediasKey;
 import com.example.personaplayfront.Repo.*;
 
 
@@ -22,49 +20,25 @@ public class ApiApplication {
     public static void main(String[] args) throws IOException {
         HibernateFactory.getInstance();
 
-//        MediaDaoImpl mediaDAO = new MediaDaoImpl();
-
-//        //open movie_ids.txt
-//        BufferedReader file = new BufferedReader(new FileReader("src/main/resources/com/example/personaplayfront/movie_ids.txt"));
-//
-//        //big list of movie series
-//        List<String> my_movies = new ArrayList<>();
-//
-//        for (int i = 0; i < 250; i++) {
-//            String line = file.readLine();
-//            my_movies.add(line);
-//        }
-//
-//        System.out.println(my_movies);
-//
-//        List<Medias> medias = new ArrayList<>();
-//
-////        medias.add(new Medias(ApiHandler.OMDBGetById(my_movies.get(0))));
-//
-//        System.out.println(medias);
-//
-//
-//        for (String movie : my_movies) {
-//            medias.add(new Medias(ApiHandler.OMDBGetById(movie)));
-//
-//            //save in db
-//            mediaDAO.save(medias.get(medias.size() - 1));
-//        }
-
-
-//
-//        List<Medias> my_medias = ApiHandler.OMDBFindAllByTitleLike("Matrix");
-//        System.out.println(my_medias);
-//
-
         UsersDaoImpl usersDao = new UsersDaoImpl();
-        RolesDaoImpl rolesDao = new RolesDaoImpl();
+        MediaDaoImpl mediaDao = new MediaDaoImpl();
+        UsersMediasDaoImpl userMediaDao = new UsersMediasDaoImpl();
 
-        Users charlie = new Users("charlie","Persona4","charlie@personaplay.com",false,rolesDao.findById(3));
+        Users user = usersDao.findAll().get(1);
 
-        System.out.println(charlie);
+        System.out.println("user: "+user);
 
-        usersDao.save(charlie);
+        Medias media = mediaDao.findAll().get(1);
+
+        System.out.println("media: "+media);
+
+        UsersMedias userMedia = new UsersMedias(user, media, 5, "Watching", false);
+
+        userMedia.setId(new UsersMediasKey(user.getId(), media.id));
+
+        System.out.println(userMedia);
+
+        userMediaDao.save(userMedia);
+
     }
-
 }
