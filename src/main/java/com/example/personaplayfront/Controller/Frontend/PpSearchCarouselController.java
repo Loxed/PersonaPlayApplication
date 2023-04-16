@@ -3,7 +3,9 @@ package com.example.personaplayfront.Controller.Frontend;
 import com.example.personaplayfront.Model.Medias;
 import com.example.personaplayfront.Repo.MediaDaoImpl;
 import javafx.animation.ScaleTransition;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.effect.ColorAdjust;
@@ -223,58 +225,25 @@ public class PpSearchCarouselController {
 
                 }
 
+                System.out.println("clicked on " + medias.get(0).mediaName + ", location: " + medias.get(0).mediaLocation);
 
-                System.out.println("clicked on " + medias.get(1).mediaName + ", location: " + medias.get(1).mediaLocation);
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_media_description.fxml"));
 
-                if(medias.get(0).available) {
-
-                    File file = null;
-
-                    //load media, if it exists launch it
-                    file = new File(medias.get(0).mediaLocation);
-
-                    //try to load media, if it fails, set available to false
-                    Media media;
-
+                    Parent root = null;
                     try {
-                        media = new Media(file.toURI().toString());
+                        System.out.println("loading media description");
+                        root = loader.load();
 
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_media_watcher.fxml"));
-                        try {
-                            //Create a new stage
-                            Stage stage = new Stage();
+                        PpMediaDescriptionController controller = loader.getController();
+                        controller.updateInfo(medias.get(0));
 
-                            //Set the scene to the stage
-                            stage.setScene(new Scene(loader.load()));
-
-                            //get the controller
-                            PpMediaWatcherController controller = loader.getController();
-                            //set the media
-                            controller.loadMedia(medias.get(0).mediaLocation);
-
-                            System.out.println(controller);
-
-                            //Set the title of the stage
-                            stage.setTitle("PersonaPlayer");
-                            //size 1280x720
-                            stage.setMinWidth(1280);
-                            stage.setMinHeight(720);
-                            stage.setResizable(false);
-                            stage.show();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    } catch (MediaException e) {
-                        System.out.println("Media location not found");
-                        medias.get(0).available = false;
-                        medias.get(0).mediaLocation = "";
-                        //set image to grey
-                        img1.setOpacity(0.5);
-
-                        mediaDao.update(medias.get(0));
-                        return;
+                        Scene scene = new Scene(root);
+                        Stage stage = new Stage();
+                        stage.setScene(scene);
+                        stage.show();
+                    } catch (IOException e) {
+                        throw new RuntimeException(e);
                     }
-                }
             });
         }
 
@@ -304,54 +273,22 @@ public class PpSearchCarouselController {
 
                 System.out.println("clicked on " + medias.get(1).mediaName + ", location: " + medias.get(1).mediaLocation);
 
-                if(medias.get(1).available) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_media_description.fxml"));
 
-                    File file = null;
+                Parent root = null;
+                try {
+                    System.out.println("loading media description");
+                    root = loader.load();
 
-                    //load media, if it exists launch it
-                    file = new File(medias.get(1).mediaLocation);
+                    PpMediaDescriptionController controller = loader.getController();
+                    controller.updateInfo(medias.get(1));
 
-                    //try to load media, if it fails, set available to false
-                    Media media;
-
-                    try {
-                        media = new Media(file.toURI().toString());
-
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_media_watcher.fxml"));
-                        try {
-                            //Create a new stage
-                            Stage stage = new Stage();
-
-                            //Set the scene to the stage
-                            stage.setScene(new Scene(loader.load()));
-
-                            //get the controller
-                            PpMediaWatcherController controller = loader.getController();
-                            //set the media
-                            controller.loadMedia(medias.get(1).mediaLocation);
-
-                            System.out.println(controller);
-
-                            //Set the title of the stage
-                            stage.setTitle("PersonaPlayer");
-                            //size 1280x720
-                            stage.setMinWidth(1280);
-                            stage.setMinHeight(720);
-                            stage.setResizable(false);
-                            stage.show();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    } catch (MediaException e) {
-                        System.out.println("Media location not found");
-                        medias.get(1).available = false;
-                        medias.get(1).mediaLocation = "";
-                        //set image to grey
-                        img2.setOpacity(0.5);
-
-                        mediaDao.update(medias.get(1));
-                        return;
-                    }
+                    Scene scene = new Scene(root);
+                    Stage stage = new Stage();
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
             });
         }
@@ -382,56 +319,22 @@ public class PpSearchCarouselController {
 
                 System.out.println("clicked on " + medias.get(2).mediaName + ", location: " + medias.get(2).mediaLocation);
 
-                if(medias.get(2).available) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_media_description.fxml"));
 
-                    File file = null;
+                Parent root = null;
+                try {
+                    System.out.println("loading media description");
+                    root = loader.load();
 
-                    //load media, if it exists launch it
-                    file = new File(medias.get(2).mediaLocation);
+                    PpMediaDescriptionController controller = loader.getController();
+                    controller.updateInfo(medias.get(2));
 
-                    //try to load media, if it fails, set available to false
-                    Media media;
-
-                    try {
-                        media = new Media(file.toURI().toString());
-
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_media_watcher.fxml"));
-                        try {
-                            //Create a new stage
-                            Stage stage = new Stage();
-
-                            //Set the scene to the stage
-                            stage.setScene(new Scene(loader.load()));
-
-                            //get the controller
-                            PpMediaWatcherController controller = loader.getController();
-                            //set the media
-                            controller.loadMedia(medias.get(2).mediaLocation);
-
-                            System.out.println(controller);
-
-                            //Set the title of the stage
-                            stage.setTitle("PersonaPlayer");
-                            //size 1280x720
-                            stage.setMinWidth(1280);
-                            stage.setMinHeight(720);
-                            stage.setResizable(false);
-                            stage.show();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    } catch (MediaException e) {
-                        System.out.println("Media location not found");
-                        medias.get(2).available = false;
-                        //clear path
-                        medias.get(2).mediaLocation = "";
-                        //set image to grey
-                        img3.setOpacity(0.5);
-
-
-                        mediaDao.update(medias.get(2));
-                        return;
-                    }
+                    Scene scene = new Scene(root);
+                    Stage stage = new Stage();
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
             });
         }
@@ -462,54 +365,22 @@ public class PpSearchCarouselController {
 
                 System.out.println("clicked on " + medias.get(3).mediaName + ", location: " + medias.get(3).mediaLocation);
 
-                if(medias.get(3).available) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_media_description.fxml"));
 
-                    File file = null;
+                Parent root = null;
+                try {
+                    System.out.println("loading media description");
+                    root = loader.load();
 
-                    //load media, if it exists launch it
-                    file = new File(medias.get(3).mediaLocation);
+                    PpMediaDescriptionController controller = loader.getController();
+                    controller.updateInfo(medias.get(3));
 
-                    //try to load media, if it fails, set available to false
-                    Media media;
-
-                    try {
-                        media = new Media(file.toURI().toString());
-
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_media_watcher.fxml"));
-                        try {
-                            //Create a new stage
-                            Stage stage = new Stage();
-
-                            //Set the scene to the stage
-                            stage.setScene(new Scene(loader.load()));
-
-                            //get the controller
-                            PpMediaWatcherController controller = loader.getController();
-                            //set the media
-                            controller.loadMedia(medias.get(3).mediaLocation);
-
-                            System.out.println(controller);
-
-                            //Set the title of the stage
-                            stage.setTitle("PersonaPlayer");
-                            //size 1280x720
-                            stage.setMinWidth(1280);
-                            stage.setMinHeight(720);
-                            stage.setResizable(false);
-                            stage.show();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    } catch (MediaException e) {
-                        System.out.println("Media location not found");
-                        medias.get(3).available = false;
-                        medias.get(3).mediaLocation = "";
-                        //set image to grey
-                        img4.setOpacity(0.5);
-
-                        mediaDao.update(medias.get(3));
-                        return;
-                    }
+                    Scene scene = new Scene(root);
+                    Stage stage = new Stage();
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
             });
         }
@@ -540,54 +411,22 @@ public class PpSearchCarouselController {
 
                 System.out.println("clicked on " + medias.get(4).mediaName + ", location: " + medias.get(4).mediaLocation);
 
-                if(medias.get(4).available) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_media_description.fxml"));
 
-                    File file = null;
+                Parent root = null;
+                try {
+                    System.out.println("loading media description");
+                    root = loader.load();
 
-                    //load media, if it exists launch it
-                    file = new File(medias.get(4).mediaLocation);
+                    PpMediaDescriptionController controller = loader.getController();
+                    controller.updateInfo(medias.get(4));
 
-                    //try to load media, if it fails, set available to false
-                    Media media;
-
-                    try {
-                        media = new Media(file.toURI().toString());
-
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_media_watcher.fxml"));
-                        try {
-                            //Create a new stage
-                            Stage stage = new Stage();
-
-                            //Set the scene to the stage
-                            stage.setScene(new Scene(loader.load()));
-
-                            //get the controller
-                            PpMediaWatcherController controller = loader.getController();
-                            //set the media
-                            controller.loadMedia(medias.get(4).mediaLocation);
-
-                            System.out.println(controller);
-
-                            //Set the title of the stage
-                            stage.setTitle("PersonaPlayer");
-                            //size 1280x720
-                            stage.setMinWidth(1280);
-                            stage.setMinHeight(720);
-                            stage.setResizable(false);
-                            stage.show();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    } catch (MediaException e) {
-                        System.out.println("Media location not found");
-                        medias.get(4).available = false;
-                        medias.get(4).mediaLocation = "";
-                        //set image to grey
-                        img5.setOpacity(0.5);
-
-                        mediaDao.update(medias.get(4));
-                        return;
-                    }
+                    Scene scene = new Scene(root);
+                    Stage stage = new Stage();
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
             });
         }
@@ -618,54 +457,22 @@ public class PpSearchCarouselController {
 
                 System.out.println("clicked on " + medias.get(5).mediaName + ", location: " + medias.get(5).mediaLocation);
 
-                if(medias.get(5).available) {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_media_description.fxml"));
 
-                    File file = null;
+                Parent root = null;
+                try {
+                    System.out.println("loading media description");
+                    root = loader.load();
 
-                    //load media, if it exists launch it
-                    file = new File(medias.get(5).mediaLocation);
+                    PpMediaDescriptionController controller = loader.getController();
+                    controller.updateInfo(medias.get(5));
 
-                    //try to load media, if it fails, set available to false
-                    Media media;
-
-                    try {
-                        media = new Media(file.toURI().toString());
-
-                        FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/personaplayfront/Vue/pp_media_watcher.fxml"));
-                        try {
-                            //Create a new stage
-                            Stage stage = new Stage();
-
-                            //Set the scene to the stage
-                            stage.setScene(new Scene(loader.load()));
-
-                            //get the controller
-                            PpMediaWatcherController controller = loader.getController();
-                            //set the media
-                            controller.loadMedia(medias.get(5).mediaLocation);
-
-                            System.out.println(controller);
-
-                            //Set the title of the stage
-                            stage.setTitle("PersonaPlayer");
-                            //size 1280x720
-                            stage.setMinWidth(1280);
-                            stage.setMinHeight(720);
-                            stage.setResizable(false);
-                            stage.show();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    } catch (MediaException e) {
-                        System.out.println("Media location not found");
-                        medias.get(5).available = false;
-                        medias.get(5).mediaLocation = "";
-                        //set image to grey
-                        img6.setOpacity(0.5);
-
-                        mediaDao.update(medias.get(5));
-                        return;
-                    }
+                    Scene scene = new Scene(root);
+                    Stage stage = new Stage();
+                    stage.setScene(scene);
+                    stage.show();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
             });
         }
