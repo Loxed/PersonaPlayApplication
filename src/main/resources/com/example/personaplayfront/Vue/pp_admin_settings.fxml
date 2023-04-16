@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="720.0" prefWidth="1080.0" style="-fx-background-color: #202020;" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.personaplayfront.Controller.Frontend.PpAdminSettingsController">
+   <children>
+      <VBox prefHeight="720.0" prefWidth="1080.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="670.0" prefWidth="1080.0" style="-fx-background-color: #2d2d2d;">
+               <children>
+                  <HBox alignment="CENTER" prefHeight="50.0" prefWidth="1080.0">
+                     <children>
+                        <VBox alignment="CENTER" prefHeight="50.0" prefWidth="180.0">
+                           <children>
+                              <Text fx:id="titleCat" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="title" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="Eras Demi ITC" size="20.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="50.0" prefWidth="180.0">
+                           <children>
+                              <Text fx:id="idCat" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="imdb_id" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="Eras Demi ITC" size="20.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="50.0" prefWidth="180.0">
+                           <children>
+                              <Text fx:id="yearCat" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="year" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="Eras Demi ITC" size="20.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="50.0" prefWidth="180.0">
+                           <children>
+                              <Text fx:id="visibleCat" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="visible" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="Eras Demi ITC" size="20.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="50.0" prefWidth="180.0">
+                           <children>
+                              <Text fx:id="availableCat" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="avaiable" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="Eras Demi ITC" size="20.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="50.0" prefWidth="180.0">
+                           <children>
+                              <Text fx:id="locationCat" fill="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" text="location" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="Eras Demi ITC" size="20.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </VBox>
+                     </children>
+                  </HBox>
+                  <ScrollPane fx:id="scrollPage" hbarPolicy="NEVER" prefHeight="620.0" prefWidth="1080.0" vbarPolicy="NEVER">
+                     <content>
+                        <VBox fx:id="mediaContainer" prefHeight="620.0" prefWidth="1080.0" style="-fx-background-color: #202020;" />
+                     </content>
+                  </ScrollPane>
+               </children>
+            </VBox>
+            <HBox alignment="CENTER" prefHeight="50.0" prefWidth="1280.0">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <children>
+                  <TextField fx:id="searchBar" prefHeight="40.0" prefWidth="600.0" promptText="Search a movie.." style="-fx-background-color: #202020; -fx-border-radius: 5; -fx-text-fill: white;">
+                     <font>
+                        <Font name="Eras Light ITC" size="20.0" />
+                     </font>
+                     <HBox.margin>
+                        <Insets left="20.0" right="20.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Button fx:id="searchButton" alignment="CENTER" minHeight="0.0" mnemonicParsing="false" onAction="#search" prefHeight="40.0" prefWidth="40.0" style="-fx-background-color: #202020; -fx-background-radius: 25;">
+                     <graphic>
+                        <ImageView fitHeight="25.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../Icon/white_search-outline.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</Pane>
