@@ -59,10 +59,4 @@ Avoid running ApiApplication, it is used to init the database with the API and u
 ## Authors
 
 
-* [Leopold Rombaut](https://www.github.com/loxed) - Back-end, Application Navigation, Database, API Integration, UI Design
-
-* [Sylvestre Dongmo Melong](#) - Admin Page UI
-
-* [Yasmine Harzallah](#) - Front-end, Home Page UI
-
-* [Harold Kemgang](#) - Front-end, Login/Sign Up UI
+* [Leopold Rombaut](https://www.github.com/loxed)
