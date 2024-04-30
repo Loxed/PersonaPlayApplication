@@ -3,8 +3,6 @@
 
 [lien du Github](https://github.com/Loxed/PersonaPlayApplication)
 
-[lien du Canva](https://www.canva.com/design/DAFgLTpyY0Y/vBX3uOBSDZyuMp61s8DtiQ/edit?utm_source=shareButton&utm_medium=email&utm_campaign=designshare)
-
 ## Installing MySQL on Windows
 
 1. Download the MySQL installer for Windows from the official MySQL website.
